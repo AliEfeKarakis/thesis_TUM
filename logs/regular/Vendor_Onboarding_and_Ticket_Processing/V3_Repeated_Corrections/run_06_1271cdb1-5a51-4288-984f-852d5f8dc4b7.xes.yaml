@@ -1,0 +1,3582 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 112790
+    cpee:name: Thesis_Workflow_Vendor_Onboarding_and_Ticket_Processing
+    cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2026-10-12T18:41:51.695888+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  time:timestamp: '2026-10-12T18:41:51.717888+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e4" mode="post_test" condition="data.authorized == false">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a1" endpoint="checkAuthorization">
+          <parameters>
+            <label>Check Authorization</label>
+            <color/>
+            <arguments>
+              <api_key>BACKEND_API_KEY</api_key>
+              <user_id>default</user_id>
+            </arguments>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.authorized = result['authorized']
+    data.authorizationUrl = result['authorization_url']</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e1" mode="exclusive" label="Authorized?">
+          <alternative eid="e2" condition="data.authorized == true">
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <otherwise eid="e3">
+            <manipulate id="a2" label="Authorization Required">
+              <code>data.authorizationUrl = data.authorizationUrl</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <stop id="a3"/>
+          </otherwise>
+        </choose>
+      </loop>
+      <call id="a4" endpoint="createSpreadsheet">
+        <parameters>
+          <label>Create Vendor Requests Spreadsheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheet_title>Vendor Onboarding and Ticket Processing</spreadsheet_title>
+            <sheet_name>Vendor Requests</sheet_name>
+            <rows>100</rows>
+            <columns>7</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.spreadsheetId = result['spreadsheetId']
+    data.vendorRequestsSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a5" endpoint="createSheet">
+        <parameters>
+          <label>Create Vendor Tickets Sheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheet_title>Vendor Tickets</sheet_title>
+            <rows>100</rows>
+            <columns>8</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.vendorTicketsSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a6" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Vendor Requests Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Requests'!A1:G1</range>
+            <values>[["Request ID","Vendor Name","Country","Tax ID","Contact Person","Request Evidence","Status"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a7" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Vendor Tickets Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Tickets'!A1:H1</range>
+            <values>[["Ticket ID","Request ID","Vendor Name","Country","Tax ID","Contact Person","Request Evidence","Status"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a8" label="Prepare Vendor Request Row">
+        <code>data.vendorRequestRow = [[data.requestId, data.vendorName, data.vendorCountry, data.vendorTaxId, data.contactPerson, data.requestEvidence, 'Received']]</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a9" endpoint="appendData">
+        <parameters>
+          <label>Append Vendor Request</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Requests'!A:G</range>
+            <values>!data.vendorRequestRow</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a10" endpoint="readData">
+        <parameters>
+          <label>Read Vendor Request</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Requests'!A2:G2</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.vendorRequestData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a11" label="Validate Vendor Request">
+        <code>row = (data.vendorRequestData || [])[0] || []; required = row[0, 6] || []; data.requestComplete = required.length == 6 &amp;&amp; required.all? { |value| !value.nil? &amp;&amp; !value.to_s.strip.empty? }</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <choose eid="e5" mode="exclusive" label="Information Complete?">
+        <alternative eid="e6" condition="data.requestComplete == true">
+          <_probability>
+            <_probability_min/>
+            <_probability_max/>
+            <_probability_avg/>
+          </_probability>
+        </alternative>
+        <otherwise eid="e7">
+          <manipulate id="a12" label="Set Status Missing Information">
+            <code>data.requestStatus = 'Missing Information'</code>
+            <annotations>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+              </_logging_behavior>
+              <_context_data_analysis>
+                <probes/>
+              </_context_data_analysis>
+            </annotations>
+          </manipulate>
+          <call id="a13" endpoint="updateCell">
+            <parameters>
+              <label>Write Missing Information Status</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Vendor Requests'!G2</range>
+                <value>!data.requestStatus</value>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+          <loop eid="e11" mode="post_test" condition="data.requestComplete == false">
+            <call id="a31" endpoint="worklist">
+              <parameters>
+                <label>Correct Vendor Information</label>
+                <color/>
+                <arguments>
+                  <orgmodel>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/org.xml</orgmodel>
+                  <form>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/forms/correct_vendor_information.html</form>
+                  <role>Regular</role>
+                  <priority>1</priority>
+                  <handling>single</handling>
+                  <restrictions/>
+                  <data>
+                    <request_id>!data.requestId</request_id>
+                    <vendor_name>!data.vendorName</vendor_name>
+                    <vendor_country>!data.vendorCountry</vendor_country>
+                    <vendor_tax_id>!data.vendorTaxId</vendor_tax_id>
+                    <contact_person>!data.contactPerson</contact_person>
+                    <request_evidence>!data.requestEvidence</request_evidence>
+                  </data>
+                </arguments>
+              </parameters>
+              <code>
+                <signal>false</signal>
+                <prepare/>
+                <finalize output="result">data.correctedRequestId = result['data']['request_id']
+    data.correctedVendorName = result['data']['vendor_name']
+    data.correctedVendorCountry = result['data']['vendor_country']
+    data.correctedVendorTaxId = result['data']['vendor_tax_id']
+    data.correctedContactPerson = result['data']['contact_person']
+    data.correctedRequestEvidence = result['data']['request_evidence']</finalize>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_generic/>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                  <_include>false</_include>
+                </_logging_behavior>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+            <manipulate id="a14" label="Prepare Corrected Vendor Request">
+              <code>request_id =
+      data.correctedRequestId.nil? || data.correctedRequestId.to_s.strip.empty? ?
+      data.requestId : data.correctedRequestId
+
+    vendor_name =
+      data.correctedVendorName.nil? || data.correctedVendorName.to_s.strip.empty? ?
+      data.vendorName : data.correctedVendorName
+
+    vendor_country =
+      data.correctedVendorCountry.nil? || data.correctedVendorCountry.to_s.strip.empty? ?
+      data.vendorCountry : data.correctedVendorCountry
+
+    vendor_tax_id =
+      data.correctedVendorTaxId.nil? || data.correctedVendorTaxId.to_s.strip.empty? ?
+      data.vendorTaxId : data.correctedVendorTaxId
+
+    contact_person =
+      data.correctedContactPerson.nil? || data.correctedContactPerson.to_s.strip.empty? ?
+      data.contactPerson : data.correctedContactPerson
+
+    request_evidence =
+      data.correctedRequestEvidence.nil? || data.correctedRequestEvidence.to_s.strip.empty? ?
+      data.requestEvidence : data.correctedRequestEvidence
+
+    data.requestId = request_id
+    data.vendorName = vendor_name
+    data.vendorCountry = vendor_country
+    data.vendorTaxId = vendor_tax_id
+    data.contactPerson = contact_person
+    data.requestEvidence = request_evidence
+
+    data.correctedVendorRequestRow = [[
+      request_id,
+      vendor_name,
+      vendor_country,
+      vendor_tax_id,
+      contact_person,
+      request_evidence
+    ]]</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <call id="a15" endpoint="updateManyCells">
+              <parameters>
+                <label>Write Corrected Vendor Request</label>
+                <color/>
+                <arguments>
+                  <api_key>BACKEND_API_KEY</api_key>
+                  <user_id>default</user_id>
+                  <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                  <range>'Vendor Requests'!A2:F2</range>
+                  <values>!data.correctedVendorRequestRow</values>
+                </arguments>
+              </parameters>
+              <code>
+                <signal>false</signal>
+                <prepare/>
+                <finalize output="result"/>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_generic/>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                  <_include>false</_include>
+                </_logging_behavior>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+            <call id="a16" endpoint="readData">
+              <parameters>
+                <label>Read Corrected Vendor Request</label>
+                <color/>
+                <arguments>
+                  <api_key>BACKEND_API_KEY</api_key>
+                  <user_id>default</user_id>
+                  <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                  <range>'Vendor Requests'!A2:G2</range>
+                </arguments>
+              </parameters>
+              <code>
+                <signal>false</signal>
+                <prepare/>
+                <finalize output="result">data.vendorRequestData = result['values']</finalize>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_generic/>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                  <_include>false</_include>
+                </_logging_behavior>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+            <manipulate id="a17" label="Revalidate Corrected Vendor Request">
+              <code>row = (data.vendorRequestData || [])[0] || []; required = row[0, 6] || []; data.requestComplete = required.length == 6 &amp;&amp; required.all? { |value| !value.nil? &amp;&amp; !value.to_s.strip.empty? }</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+            <_annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_iteration>false</_iteration>
+              </_logging_behavior>
+            </_annotations>
+          </loop>
+        </otherwise>
+      </choose>
+      <manipulate id="a19" label="Prepare Structured Robot Input">
+        <code>row = (data.vendorRequestData || [])[0] || []; data.robotInputData = [[row[0], row[1], row[2], row[3], row[4], row[5]]]</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <manipulate id="a20" label="Prepare Vendor Ticket Record">
+        <code>row = (data.robotInputData || [])[0] || []; data.vendorTicketRow = [['', row[0], row[1], row[2], row[3], row[4], row[5], '']]</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a25" endpoint="appendData">
+        <parameters>
+          <label>Append Vendor Ticket</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Tickets'!A:H</range>
+            <values>!data.vendorTicketRow</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a21" label="Generate Ticket ID">
+        <code>data.ticketId = 'TICKET-' + data.requestId.to_s</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a39" endpoint="updateCell">
+        <parameters>
+          <label>Write Ticket ID</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Tickets'!A2</range>
+            <value>!data.ticketId</value>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a22" label="Set Ticket Status Submitted">
+        <code>data.ticketStatus = 'Submitted'</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a30" endpoint="updateCell">
+        <parameters>
+          <label>Write Ticket Status Submitted</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Tickets'!H2</range>
+            <value>!data.ticketStatus</value>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a24" label="Set Vendor Request Status Submitted">
+        <code>data.requestStatus = 'Submitted'</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a26" endpoint="updateCell">
+        <parameters>
+          <label>Write Vendor Request Status Submitted</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Requests'!G2</range>
+            <value>!data.requestStatus</value>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a27" endpoint="formatRange">
+        <parameters>
+          <label>Format Vendor Requests Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.vendorRequestsSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>7</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a35" endpoint="formatRange">
+        <parameters>
+          <label>Format Vendor Tickets Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.vendorTicketsSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>8</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a28" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Vendor Requests Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.vendorRequestsSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>7</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a36" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Vendor Tickets Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.vendorTicketsSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>8</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a42" endpoint="readData">
+        <parameters>
+          <label>Verify Vendor Request</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Requests'!A1:G</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedVendorRequestData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a49" endpoint="readData">
+        <parameters>
+          <label>Verify Vendor Ticket</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Vendor Tickets'!A1:H</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedVendorTicketData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  cpee:change_uuid: 9bbfc7d3fccb4c52e8dfbb7f495a096368f8954f
+  time:timestamp: '2026-10-12T18:41:51.739898+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestId
+    value: VENDOR-TEST-03
+  time:timestamp: '2026-10-12T18:44:44.317884+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorName
+    value: Example Supplies
+  time:timestamp: '2026-10-12T18:45:04.477484+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorCountry
+    value: Germany
+  time:timestamp: '2026-10-12T18:45:23.575169+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorTaxId
+    value: ''
+  time:timestamp: '2026-10-12T18:46:03.241540+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: contactPerson
+    value: Test Contact
+  time:timestamp: '2026-10-12T18:46:05.357156+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestEvidence
+    value: ''
+  time:timestamp: '2026-10-12T18:46:06.886177+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2026-10-12T18:48:49.556792+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 6c157e26d9a28e14a675dbabd74bc387
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  time:timestamp: '2026-10-12T18:48:49.560091+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 6c157e26d9a28e14a675dbabd74bc387
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:49.659480+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "user_id": "default", "authorized": true}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 6c157e26d9a28e14a675dbabd74bc387
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: authorized
+    value: true
+  - name: authorizationUrl
+    value:
+  time:timestamp: '2026-10-12T18:48:49.674118+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 6c157e26d9a28e14a675dbabd74bc387
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:49.674311+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e2
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == true
+    result: true
+  time:timestamp: '2026-10-12T18:48:49.685831+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e1
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T18:48:49.686118+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e4
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == false
+    result: false
+  time:timestamp: '2026-10-12T18:48:49.694009+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: f98ff35a4b397dab25f9db2235c94019
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheet_title
+    value: Vendor Onboarding and Ticket Processing
+  - name: sheet_name
+    value: Vendor Requests
+  - name: rows
+    value: '100'
+  - name: columns
+    value: '7'
+  time:timestamp: '2026-10-12T18:48:49.695394+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: f98ff35a4b397dab25f9db2235c94019
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:50.533868+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSpreadsheet", "spreadsheetId": "1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0",
+      "sheetId": 229379447, "sheetTitle": "Vendor Requests"}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: f98ff35a4b397dab25f9db2235c94019
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:50.555980+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: f98ff35a4b397dab25f9db2235c94019
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: vendorRequestsSheetId
+    value: 229379447
+  time:timestamp: '2026-10-12T18:48:50.555768+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Tickets Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 1355e7079389f26203e5e4aaf7b5dfd8
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: sheet_title
+    value: Vendor Tickets
+  - name: rows
+    value: '100'
+  - name: columns
+    value: '8'
+  time:timestamp: '2026-10-12T18:48:50.563899+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Tickets Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 1355e7079389f26203e5e4aaf7b5dfd8
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:51.206846+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSheet", "sheetId": 2104516133, "title":
+      "Vendor Tickets"}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Tickets Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 1355e7079389f26203e5e4aaf7b5dfd8
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorTicketsSheetId
+    value: 2104516133
+  time:timestamp: '2026-10-12T18:48:51.223333+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Create Vendor Tickets Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 1355e7079389f26203e5e4aaf7b5dfd8
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:51.223534+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Requests Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 3f80fc291f70f488f6cbc6d7bc0fba88
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A1:G1"
+  - name: values
+    value: '[["Request ID","Vendor Name","Country","Tax ID","Contact Person","Request
+      Evidence","Status"]]'
+  time:timestamp: '2026-10-12T18:48:51.236719+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Requests Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 3f80fc291f70f488f6cbc6d7bc0fba88
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:51.623643+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Vendor
+      Requests''!A1:G1", "updatedCells": 7}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Requests Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 3f80fc291f70f488f6cbc6d7bc0fba88
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:51.625338+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Tickets Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: 979f720627c010dfda56a7b803117c78
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Tickets'!A1:H1"
+  - name: values
+    value: '[["Ticket ID","Request ID","Vendor Name","Country","Tax ID","Contact Person","Request
+      Evidence","Status"]]'
+  time:timestamp: '2026-10-12T18:48:51.638920+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Tickets Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: 979f720627c010dfda56a7b803117c78
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:52.025242+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Tickets Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: 979f720627c010dfda56a7b803117c78
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:52.024561+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Vendor
+      Tickets''!A1:H1", "updatedCells": 8}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Vendor Request Row
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: 667ac2dca0ee498d0fe816a30cd6b16f
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:52.043562+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Vendor Request Row
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: 667ac2dca0ee498d0fe816a30cd6b16f
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorRequestRow
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - ''
+      - Test Contact
+      - ''
+      - Received
+  time:timestamp: '2026-10-12T18:48:52.043316+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Append Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 7c884f2b85398f5c349ea7854d04ef91
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A:G"
+  - name: values
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - ''
+      - Test Contact
+      - ''
+      - Received
+  time:timestamp: '2026-10-12T18:48:52.079331+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Append Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 7c884f2b85398f5c349ea7854d04ef91
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:52.532482+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "appendData", "updatedRange": "''Vendor Requests''!A2:G2",
+      "updatedRows": 1, "updatedCells": 7}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Append Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 7c884f2b85398f5c349ea7854d04ef91
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:52.532995+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 178dd9946e638818857ad02381a46704
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A2:G2"
+  time:timestamp: '2026-10-12T18:48:52.545546+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 178dd9946e638818857ad02381a46704
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:52.983327+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Vendor Requests''!A2:G2",
+      "values": [["VENDOR-TEST-03", "Example Supplies", "Germany", "", "Test Contact",
+      "", "Received"]]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 178dd9946e638818857ad02381a46704
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:52.997470+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 178dd9946e638818857ad02381a46704
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorRequestData
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - ''
+      - Test Contact
+      - ''
+      - Received
+  time:timestamp: '2026-10-12T18:48:52.996833+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Validate Vendor Request
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: 8178fa483824ffce1a69933637db87ea
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestComplete
+    value: false
+  time:timestamp: '2026-10-12T18:48:53.007193+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Validate Vendor Request
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: 8178fa483824ffce1a69933637db87ea
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:53.007344+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e6
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.requestComplete == true
+    result: false
+  time:timestamp: '2026-10-12T18:48:53.016456+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Set Status Missing Information
+  id:id: a12
+  cpee:activity: a12
+  cpee:activity_uuid: c70f2c456a2c2cbe76137a8dfd083737
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestStatus
+    value: Missing Information
+  time:timestamp: '2026-10-12T18:48:53.025631+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Set Status Missing Information
+  id:id: a12
+  cpee:activity: a12
+  cpee:activity_uuid: c70f2c456a2c2cbe76137a8dfd083737
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:53.026510+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Missing Information Status
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: dcfada3fea5b220c42bdbc0b58731115
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!G2"
+  - name: value
+    value: Missing Information
+  time:timestamp: '2026-10-12T18:48:53.046367+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Missing Information Status
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: dcfada3fea5b220c42bdbc0b58731115
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:53.402492+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Vendor Requests''!G2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Missing Information Status
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: dcfada3fea5b220c42bdbc0b58731115
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:53.403156+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: 63767d774a8136b885e62897009b718c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: orgmodel
+    value: https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/org.xml
+  - name: form
+    value: https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/forms/correct_vendor_information.html
+  - name: role
+    value: Regular
+  - name: priority
+    value: '1'
+  - name: handling
+    value: single
+  - name: restrictions
+    value:
+  - name: data
+    value:
+      request_id: VENDOR-TEST-03
+      vendor_name: Example Supplies
+      vendor_country: Germany
+      vendor_tax_id: ''
+      contact_person: Test Contact
+      request_evidence: ''
+  time:timestamp: '2026-10-12T18:48:53.457233+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: 63767d774a8136b885e62897009b718c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:54.987482+02:00'
+  data:
+  - name: user
+    data: 03743056_knd1
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: 63767d774a8136b885e62897009b718c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/take
+  time:timestamp: '2026-10-12T18:48:54.987716+02:00'
+  data:
+  - name: user
+    data: 03743056_knd1
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: 63767d774a8136b885e62897009b718c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:58.322896+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"user":"03743056_knd1","raw":[{"name":"request_id","value":"VENDOR-TEST-03"},{"name":"vendor_name","value":"Example
+      Supplies"},{"name":"vendor_country","value":"Germany"},{"name":"vendor_tax_id","value":"TEST-TAX-003"},{"name":"contact_person","value":"Test
+      Contact"},{"name":"request_evidence","value":"   "}],"data":{"request_id":"VENDOR-TEST-03","vendor_name":"Example
+      Supplies","vendor_country":"Germany","vendor_tax_id":"TEST-TAX-003","contact_person":"Test
+      Contact","request_evidence":"   "}}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: 63767d774a8136b885e62897009b718c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:58.335986+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: 63767d774a8136b885e62897009b718c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: correctedRequestId
+    value: VENDOR-TEST-03
+  - name: correctedVendorName
+    value: Example Supplies
+  - name: correctedVendorCountry
+    value: Germany
+  - name: correctedVendorTaxId
+    value: TEST-TAX-003
+  - name: correctedContactPerson
+    value: Test Contact
+  - name: correctedRequestEvidence
+    value: "   "
+  time:timestamp: '2026-10-12T18:48:58.335785+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Corrected Vendor Request
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 7ae1f8eb8ad8375f4e47ab1366a3ba0b
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestId
+    value: VENDOR-TEST-03
+  - name: vendorName
+    value: Example Supplies
+  - name: vendorCountry
+    value: Germany
+  - name: vendorTaxId
+    value: TEST-TAX-003
+  - name: contactPerson
+    value: Test Contact
+  - name: requestEvidence
+    value: ''
+  - name: correctedVendorRequestRow
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - ''
+  time:timestamp: '2026-10-12T18:48:58.359656+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Corrected Vendor Request
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 7ae1f8eb8ad8375f4e47ab1366a3ba0b
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:58.359905+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: 1fb9a95a1cf4a2e36029f4dd56221e8e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A2:F2"
+  - name: values
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - ''
+  time:timestamp: '2026-10-12T18:48:58.378779+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: 1fb9a95a1cf4a2e36029f4dd56221e8e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:58.832884+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Vendor
+      Requests''!A2:F2", "updatedCells": 6}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: 1fb9a95a1cf4a2e36029f4dd56221e8e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:58.835651+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 3a1fb58f98cccd66ecef426b1ec62216
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A2:G2"
+  time:timestamp: '2026-10-12T18:48:58.847174+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 3a1fb58f98cccd66ecef426b1ec62216
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:48:59.275049+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Vendor Requests''!A2:G2",
+      "values": [["VENDOR-TEST-03", "Example Supplies", "Germany", "TEST-TAX-003",
+      "Test Contact", "", "Missing Information"]]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 3a1fb58f98cccd66ecef426b1ec62216
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorRequestData
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - ''
+      - Missing Information
+  time:timestamp: '2026-10-12T18:48:59.288480+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Revalidate Corrected Vendor Request
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: c7a1a574cd96050b79d3a548e5caa67b
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:59.302156+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 3a1fb58f98cccd66ecef426b1ec62216
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:48:59.288753+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Revalidate Corrected Vendor Request
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: c7a1a574cd96050b79d3a548e5caa67b
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestComplete
+    value: false
+  time:timestamp: '2026-10-12T18:48:59.301893+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e11
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.requestComplete == false
+    result: true
+  time:timestamp: '2026-10-12T18:48:59.315504+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: f5aa2134d471967b4e5ed04dd0c3f99d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: orgmodel
+    value: https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/org.xml
+  - name: form
+    value: https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/forms/correct_vendor_information.html
+  - name: role
+    value: Regular
+  - name: priority
+    value: '1'
+  - name: handling
+    value: single
+  - name: restrictions
+    value:
+  - name: data
+    value:
+      request_id: VENDOR-TEST-03
+      vendor_name: Example Supplies
+      vendor_country: Germany
+      vendor_tax_id: TEST-TAX-003
+      contact_person: Test Contact
+      request_evidence: ''
+  time:timestamp: '2026-10-12T18:48:59.366485+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: f5aa2134d471967b4e5ed04dd0c3f99d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:00.965562+02:00'
+  data:
+  - name: user
+    data: 03743056_knd1
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: f5aa2134d471967b4e5ed04dd0c3f99d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/take
+  time:timestamp: '2026-10-12T18:49:00.965806+02:00'
+  data:
+  - name: user
+    data: 03743056_knd1
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: f5aa2134d471967b4e5ed04dd0c3f99d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:02.531837+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"user":"03743056_knd1","raw":[{"name":"request_id","value":"VENDOR-TEST-03"},{"name":"vendor_name","value":"Example
+      Supplies"},{"name":"vendor_country","value":"Germany"},{"name":"vendor_tax_id","value":"TEST-TAX-003"},{"name":"contact_person","value":"Test
+      Contact"},{"name":"request_evidence","value":"Test request documentation"}],"data":{"request_id":"VENDOR-TEST-03","vendor_name":"Example
+      Supplies","vendor_country":"Germany","vendor_tax_id":"TEST-TAX-003","contact_person":"Test
+      Contact","request_evidence":"Test request documentation"}}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: f5aa2134d471967b4e5ed04dd0c3f99d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:02.551584+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Correct Vendor Information
+  concept:endpoint: https-post://cpee.org/worklist/server/
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: f5aa2134d471967b4e5ed04dd0c3f99d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: correctedRequestId
+    value: VENDOR-TEST-03
+  - name: correctedVendorName
+    value: Example Supplies
+  - name: correctedVendorCountry
+    value: Germany
+  - name: correctedVendorTaxId
+    value: TEST-TAX-003
+  - name: correctedContactPerson
+    value: Test Contact
+  - name: correctedRequestEvidence
+    value: Test request documentation
+  time:timestamp: '2026-10-12T18:49:02.551260+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Corrected Vendor Request
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 8d56255388f99f7f620103ce842b4df6
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestId
+    value: VENDOR-TEST-03
+  - name: vendorName
+    value: Example Supplies
+  - name: vendorCountry
+    value: Germany
+  - name: vendorTaxId
+    value: TEST-TAX-003
+  - name: contactPerson
+    value: Test Contact
+  - name: requestEvidence
+    value: Test request documentation
+  - name: correctedVendorRequestRow
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+  time:timestamp: '2026-10-12T18:49:02.567260+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Corrected Vendor Request
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 8d56255388f99f7f620103ce842b4df6
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:02.567763+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: c4e5008ba567407ad4bd6e12c13f7831
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A2:F2"
+  - name: values
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+  time:timestamp: '2026-10-12T18:49:02.587371+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: c4e5008ba567407ad4bd6e12c13f7831
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:02.965333+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: c4e5008ba567407ad4bd6e12c13f7831
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:02.964476+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Vendor
+      Requests''!A2:F2", "updatedCells": 6}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 821bb1ab568188f0b9ac95515caf6213
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A2:G2"
+  time:timestamp: '2026-10-12T18:49:02.979983+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 821bb1ab568188f0b9ac95515caf6213
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:03.365186+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Vendor Requests''!A2:G2",
+      "values": [["VENDOR-TEST-03", "Example Supplies", "Germany", "TEST-TAX-003",
+      "Test Contact", "Test request documentation", "Missing Information"]]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 821bb1ab568188f0b9ac95515caf6213
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:03.377631+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Read Corrected Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 821bb1ab568188f0b9ac95515caf6213
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorRequestData
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+      - Missing Information
+  time:timestamp: '2026-10-12T18:49:03.377186+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Revalidate Corrected Vendor Request
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: 860c9447b4861c97fae9fb0ab26d9d3d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestComplete
+    value: true
+  time:timestamp: '2026-10-12T18:49:03.389337+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Revalidate Corrected Vendor Request
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: 860c9447b4861c97fae9fb0ab26d9d3d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:03.390489+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e11
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.requestComplete == false
+    result: false
+  time:timestamp: '2026-10-12T18:49:03.398486+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: e5
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T18:49:03.398746+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Structured Robot Input
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 9d67c7caff947e8920e51e9d54a5168c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:03.409352+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Structured Robot Input
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 9d67c7caff947e8920e51e9d54a5168c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: robotInputData
+    value:
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+  time:timestamp: '2026-10-12T18:49:03.409201+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Vendor Ticket Record
+  id:id: a20
+  cpee:activity: a20
+  cpee:activity_uuid: 7407be2ebdbcfc1dd56ad61b0fc10208
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: vendorTicketRow
+    value:
+    - - ''
+      - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+      - ''
+  time:timestamp: '2026-10-12T18:49:03.419006+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Prepare Vendor Ticket Record
+  id:id: a20
+  cpee:activity: a20
+  cpee:activity_uuid: 7407be2ebdbcfc1dd56ad61b0fc10208
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:03.419311+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Append Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a25
+  cpee:activity: a25
+  cpee:activity_uuid: 753bb8cb4a97958feae1082563ff81e3
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Tickets'!A:H"
+  - name: values
+    value:
+    - - ''
+      - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+      - ''
+  time:timestamp: '2026-10-12T18:49:03.443873+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Append Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a25
+  cpee:activity: a25
+  cpee:activity_uuid: 753bb8cb4a97958feae1082563ff81e3
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:03.829936+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Append Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a25
+  cpee:activity: a25
+  cpee:activity_uuid: 753bb8cb4a97958feae1082563ff81e3
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:03.829423+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "appendData", "updatedRange": "''Vendor Tickets''!A2:H2",
+      "updatedRows": 1, "updatedCells": 8}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Generate Ticket ID
+  id:id: a21
+  cpee:activity: a21
+  cpee:activity_uuid: 161c854a498193701fcb166a2ee41c26
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:03.845990+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Generate Ticket ID
+  id:id: a21
+  cpee:activity: a21
+  cpee:activity_uuid: 161c854a498193701fcb166a2ee41c26
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: ticketId
+    value: TICKET-VENDOR-TEST-03
+  time:timestamp: '2026-10-12T18:49:03.845837+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Ticket ID
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a39
+  cpee:activity: a39
+  cpee:activity_uuid: f90d7c6da103f1a6d745c92d0ae0884a
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Tickets'!A2"
+  - name: value
+    value: TICKET-VENDOR-TEST-03
+  time:timestamp: '2026-10-12T18:49:03.862352+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Ticket ID
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a39
+  cpee:activity: a39
+  cpee:activity_uuid: f90d7c6da103f1a6d745c92d0ae0884a
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:04.229724+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Vendor Tickets''!A2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Ticket ID
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a39
+  cpee:activity: a39
+  cpee:activity_uuid: f90d7c6da103f1a6d745c92d0ae0884a
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:04.230181+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Set Ticket Status Submitted
+  id:id: a22
+  cpee:activity: a22
+  cpee:activity_uuid: 516cfd407c39da74747b5d26ce8f055a
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: ticketStatus
+    value: Submitted
+  time:timestamp: '2026-10-12T18:49:04.245211+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Set Ticket Status Submitted
+  id:id: a22
+  cpee:activity: a22
+  cpee:activity_uuid: 516cfd407c39da74747b5d26ce8f055a
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:04.246142+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Ticket Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a30
+  cpee:activity: a30
+  cpee:activity_uuid: 2a8eb0a602897149d2b058a56a41d03c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Tickets'!H2"
+  - name: value
+    value: Submitted
+  time:timestamp: '2026-10-12T18:49:04.268552+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Ticket Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a30
+  cpee:activity: a30
+  cpee:activity_uuid: 2a8eb0a602897149d2b058a56a41d03c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:04.637345+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Vendor Tickets''!H2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Ticket Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a30
+  cpee:activity: a30
+  cpee:activity_uuid: 2a8eb0a602897149d2b058a56a41d03c
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:04.638176+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Set Vendor Request Status Submitted
+  id:id: a24
+  cpee:activity: a24
+  cpee:activity_uuid: ef2531ec5809fb9a9053cac62bfb048e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestStatus
+    value: Submitted
+  time:timestamp: '2026-10-12T18:49:04.657746+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Set Vendor Request Status Submitted
+  id:id: a24
+  cpee:activity: a24
+  cpee:activity_uuid: ef2531ec5809fb9a9053cac62bfb048e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:04.657945+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Request Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a26
+  cpee:activity: a26
+  cpee:activity_uuid: 0b54432eec1e9f2b11283a77a99b3b34
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!G2"
+  - name: value
+    value: Submitted
+  time:timestamp: '2026-10-12T18:49:04.674916+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Request Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a26
+  cpee:activity: a26
+  cpee:activity_uuid: 0b54432eec1e9f2b11283a77a99b3b34
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:05.087045+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Write Vendor Request Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a26
+  cpee:activity: a26
+  cpee:activity_uuid: 0b54432eec1e9f2b11283a77a99b3b34
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:05.085636+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Vendor Requests''!G2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Format Vendor Requests Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a27
+  cpee:activity: a27
+  cpee:activity_uuid: 8c3d0d0b13c60164f8ebb1774d08b102
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: sheetId
+    value: 229379447
+  - name: startRowIndex
+    value: '0'
+  - name: endRowIndex
+    value: '1'
+  - name: startColumnIndex
+    value: '0'
+  - name: endColumnIndex
+    value: '7'
+  - name: bold
+    value: 'true'
+  - name: fontSize
+    value: '12'
+  time:timestamp: '2026-10-12T18:49:05.107724+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Format Vendor Requests Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a27
+  cpee:activity: a27
+  cpee:activity_uuid: 8c3d0d0b13c60164f8ebb1774d08b102
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:05.545864+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Format Vendor Requests Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a27
+  cpee:activity: a27
+  cpee:activity_uuid: 8c3d0d0b13c60164f8ebb1774d08b102
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:05.545130+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "formatRange", "formattedRange": {"sheetId":
+      229379447, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex":
+      7}, "fields": ["userEnteredFormat.textFormat.bold", "userEnteredFormat.textFormat.fontSize"]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Format Vendor Tickets Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a35
+  cpee:activity: a35
+  cpee:activity_uuid: 8dee87042c2586f344f0d4fd1e6f94f2
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: sheetId
+    value: 2104516133
+  - name: startRowIndex
+    value: '0'
+  - name: endRowIndex
+    value: '1'
+  - name: startColumnIndex
+    value: '0'
+  - name: endColumnIndex
+    value: '8'
+  - name: bold
+    value: 'true'
+  - name: fontSize
+    value: '12'
+  time:timestamp: '2026-10-12T18:49:05.574362+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Format Vendor Tickets Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a35
+  cpee:activity: a35
+  cpee:activity_uuid: 8dee87042c2586f344f0d4fd1e6f94f2
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:05.982362+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Format Vendor Tickets Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a35
+  cpee:activity: a35
+  cpee:activity_uuid: 8dee87042c2586f344f0d4fd1e6f94f2
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:05.981273+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "formatRange", "formattedRange": {"sheetId":
+      2104516133, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex":
+      8}, "fields": ["userEnteredFormat.textFormat.bold", "userEnteredFormat.textFormat.fontSize"]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Resize Vendor Requests Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a28
+  cpee:activity: a28
+  cpee:activity_uuid: ca1d889d3655f870305066d1b6813238
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: sheetId
+    value: 229379447
+  - name: dimension
+    value: COLUMNS
+  - name: startIndex
+    value: '0'
+  - name: endIndex
+    value: '7'
+  - name: pixelSize
+    value: '150'
+  time:timestamp: '2026-10-12T18:49:06.003925+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Resize Vendor Requests Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a28
+  cpee:activity: a28
+  cpee:activity_uuid: ca1d889d3655f870305066d1b6813238
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:07.055776+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "resizeDimension", "sheetId": 229379447, "dimension":
+      "COLUMNS", "startIndex": 0, "endIndex": 7, "pixelSize": 150}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Resize Vendor Requests Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a28
+  cpee:activity: a28
+  cpee:activity_uuid: ca1d889d3655f870305066d1b6813238
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:07.056919+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Resize Vendor Tickets Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a36
+  cpee:activity: a36
+  cpee:activity_uuid: b3f9d98a969290db8c7163a474425412
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: sheetId
+    value: 2104516133
+  - name: dimension
+    value: COLUMNS
+  - name: startIndex
+    value: '0'
+  - name: endIndex
+    value: '8'
+  - name: pixelSize
+    value: '150'
+  time:timestamp: '2026-10-12T18:49:07.082625+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Resize Vendor Tickets Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a36
+  cpee:activity: a36
+  cpee:activity_uuid: b3f9d98a969290db8c7163a474425412
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:07.470571+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Resize Vendor Tickets Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a36
+  cpee:activity: a36
+  cpee:activity_uuid: b3f9d98a969290db8c7163a474425412
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:07.469752+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "resizeDimension", "sheetId": 2104516133, "dimension":
+      "COLUMNS", "startIndex": 0, "endIndex": 8, "pixelSize": 150}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a42
+  cpee:activity: a42
+  cpee:activity_uuid: d79de8c598968950b21383b5215bb12d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Requests'!A1:G"
+  time:timestamp: '2026-10-12T18:49:07.499159+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a42
+  cpee:activity: a42
+  cpee:activity_uuid: d79de8c598968950b21383b5215bb12d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:07.864376+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Vendor Requests''!A1:G101",
+      "values": [["Request ID", "Vendor Name", "Country", "Tax ID", "Contact Person",
+      "Request Evidence", "Status"], ["VENDOR-TEST-03", "Example Supplies", "Germany",
+      "TEST-TAX-003", "Test Contact", "Test request documentation", "Submitted"]]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a42
+  cpee:activity: a42
+  cpee:activity_uuid: d79de8c598968950b21383b5215bb12d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: verifiedVendorRequestData
+    value:
+    - - Request ID
+      - Vendor Name
+      - Country
+      - Tax ID
+      - Contact Person
+      - Request Evidence
+      - Status
+    - - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+      - Submitted
+  time:timestamp: '2026-10-12T18:49:07.880054+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a42
+  cpee:activity: a42
+  cpee:activity_uuid: d79de8c598968950b21383b5215bb12d
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:07.880242+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a49
+  cpee:activity: a49
+  cpee:activity_uuid: 0ea79c0ce82b6a4c07477d4113ca800e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1clOHYHFWlQW6hJKpsWJArD-PbXjWJdV_0vv5Xl2GSG0
+  - name: range
+    value: "'Vendor Tickets'!A1:H"
+  time:timestamp: '2026-10-12T18:49:07.888148+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a49
+  cpee:activity: a49
+  cpee:activity_uuid: 0ea79c0ce82b6a4c07477d4113ca800e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:49:08.288825+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Vendor Tickets''!A1:H101",
+      "values": [["Ticket ID", "Request ID", "Vendor Name", "Country", "Tax ID", "Contact
+      Person", "Request Evidence", "Status"], ["TICKET-VENDOR-TEST-03", "VENDOR-TEST-03",
+      "Example Supplies", "Germany", "TEST-TAX-003", "Test Contact", "Test request
+      documentation", "Submitted"]]}'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a49
+  cpee:activity: a49
+  cpee:activity_uuid: 0ea79c0ce82b6a4c07477d4113ca800e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:49:08.307090+02:00'
+---
+event:
+  concept:instance: 112790
+  concept:name: Verify Vendor Ticket
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a49
+  cpee:activity: a49
+  cpee:activity_uuid: 0ea79c0ce82b6a4c07477d4113ca800e
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: verifiedVendorTicketData
+    value:
+    - - Ticket ID
+      - Request ID
+      - Vendor Name
+      - Country
+      - Tax ID
+      - Contact Person
+      - Request Evidence
+      - Status
+    - - TICKET-VENDOR-TEST-03
+      - VENDOR-TEST-03
+      - Example Supplies
+      - Germany
+      - TEST-TAX-003
+      - Test Contact
+      - Test request documentation
+      - Submitted
+  time:timestamp: '2026-10-12T18:49:08.306224+02:00'
+---
+event:
+  concept:instance: 112790
+  id:id: ex-ante
+  cpee:instance: 1271cdb1-5a51-4288-984f-852d5f8dc4b7
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2026-10-12T18:49:08.307704+02:00'
