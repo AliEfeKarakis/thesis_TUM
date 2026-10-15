@@ -1,0 +1,2298 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 112798
+    cpee:name: Thesis_Workflow_Travel_Authorization_Request_Processing
+    cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2026-10-12T18:53:20.582761+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  time:timestamp: '2026-10-12T18:53:20.595076+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e1" mode="post_test" condition="data.authorized == false">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a1" endpoint="checkAuthorization">
+          <parameters>
+            <label>Check Authorization</label>
+            <color/>
+            <arguments>
+              <api_key>BACKEND_API_KEY</api_key>
+              <user_id>default</user_id>
+            </arguments>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.authorized = result['authorized']
+    data.authorizationUrl = result['authorization_url']</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e2" mode="exclusive" label="Authorized?">
+          <alternative eid="e3" condition="data.authorized == true">
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <otherwise eid="e4">
+            <manipulate id="a2" label="Authorization Required">
+              <code>data.authorizationUrl = data.authorizationUrl</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <stop id="a3"/>
+          </otherwise>
+        </choose>
+      </loop>
+      <call id="a4" endpoint="createSpreadsheet">
+        <parameters>
+          <label>Create Travel Requests Spreadsheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheet_title>Travel Authorization Request Processing</spreadsheet_title>
+            <sheet_name>Travel Requests</sheet_name>
+            <rows>100</rows>
+            <columns>7</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.spreadsheetId = result['spreadsheetId']
+    data.travelRequestsSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a9" endpoint="createSheet">
+        <parameters>
+          <label>Create Travel Authorizations Sheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheet_title>Travel Authorizations</sheet_title>
+            <rows>100</rows>
+            <columns>9</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.travelAuthorizationsSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a11" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Travel Requests Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Requests'!A1:G1</range>
+            <values>[["Request ID","Employee Name","Destination","Start Date","End Date","Travel Purpose","Personal Car Requested"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a19" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Travel Authorizations Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Authorizations'!A1:I1</range>
+            <values>[["Request ID","Employee Name","Destination","Start Date","End Date","Travel Purpose","Personal Car Requested","Car Decision","Status"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a5" label="Prepare Travel Request Row">
+        <code>data.travelRequestRow = [[data.travelRequestId, data.employeeName, data.destination, data.startDate, data.endDate, data.travelPurpose, data.personalCarRequested]]</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a13" endpoint="appendData">
+        <parameters>
+          <label>Append Travel Request</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Requests'!A:G</range>
+            <values>!data.travelRequestRow</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a18" endpoint="readData">
+        <parameters>
+          <label>Read Travel Request</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Requests'!A2:G2</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.travelRequestData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a6" label="Prepare Travel Authorization Row">
+        <code>row = (data.travelRequestData || [])[0] || []; data.travelAuthorizationRow = [[row[0], row[1], row[2], row[3], row[4], row[5], row[6], '', '']]</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a16" endpoint="appendData">
+        <parameters>
+          <label>Write Travel Authorization</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Authorizations'!A:I</range>
+            <values>!data.travelAuthorizationRow</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <choose eid="e5" mode="exclusive" label="Personal Car Requested?">
+        <alternative eid="e6" condition="data.personalCarRequested == true">
+          <call id="a12" endpoint="worklist">
+            <parameters>
+              <label>Personal Car Decision</label>
+              <color/>
+              <arguments>
+                <orgmodel>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/org.xml</orgmodel>
+                <form>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/forms/personal_car_decision.html</form>
+                <role>Regular</role>
+                <priority>1</priority>
+                <handling>single</handling>
+                <restrictions/>
+                <data>
+                  <travel_request_id>!data.travelRequestId</travel_request_id>
+                  <employee_name>!data.employeeName</employee_name>
+                  <destination>!data.destination</destination>
+                  <start_date>!data.startDate</start_date>
+                  <end_date>!data.endDate</end_date>
+                  <travel_purpose>!data.travelPurpose</travel_purpose>
+                  <personal_car_requested>!data.personalCarRequested</personal_car_requested>
+                </data>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result">data.carDecision = result['data']['car_decision']</finalize>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+          <call id="a10" endpoint="updateCell">
+            <parameters>
+              <label>Write Personal Car Decision</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Travel Authorizations'!H2</range>
+                <value>!data.carDecision</value>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+          <_probability>
+            <_probability_min/>
+            <_probability_max/>
+            <_probability_avg/>
+          </_probability>
+        </alternative>
+        <otherwise eid="e7"/>
+      </choose>
+      <manipulate id="a7" label="Set Authorization Status Submitted">
+        <code>data.authorizationStatus = 'Submitted'</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a15" endpoint="updateCell">
+        <parameters>
+          <label>Write Authorization Status Submitted</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Authorizations'!I2</range>
+            <value>!data.authorizationStatus</value>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a24" endpoint="formatRange">
+        <parameters>
+          <label>Format Travel Requests Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.travelRequestsSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>7</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a28" endpoint="formatRange">
+        <parameters>
+          <label>Format Travel Authorizations Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.travelAuthorizationsSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>9</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a31" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Travel Requests Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.travelRequestsSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>7</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a35" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Travel Authorizations Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.travelAuthorizationsSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>9</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a38" endpoint="readData">
+        <parameters>
+          <label>Verify Travel Authorization</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Authorizations'!A1:I</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedTravelAuthorizationData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a14" endpoint="readData">
+        <parameters>
+          <label>Verify Travel Request</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Travel Requests'!A1:G</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedTravelRequestData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  cpee:change_uuid: 152078d611bad312243cd6199193e6ec0e7469fa
+  time:timestamp: '2026-10-12T18:53:20.614622+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: travelRequestId
+    value: TRAVEL-TEST-01
+  time:timestamp: '2026-10-12T18:55:47.776955+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: employeeName
+    value: Test Employee
+  time:timestamp: '2026-10-12T18:56:13.696303+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: destination
+    value: Berlin
+  time:timestamp: '2026-10-12T18:56:24.471346+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: startDate
+    value: '2026-11-10'
+  time:timestamp: '2026-10-12T18:56:56.127853+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: endDate
+    value: '2026-11-12'
+  time:timestamp: '2026-10-12T18:57:07.739682+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: travelPurpose
+    value: Project meeting
+  time:timestamp: '2026-10-12T18:57:38.915387+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: personalCarRequested
+    value: false
+  time:timestamp: '2026-10-12T18:57:51.044206+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 177479ab8c6f0582705cdbae6c06bb34
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  time:timestamp: '2026-10-12T18:58:47.604245+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2026-10-12T18:58:47.602892+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 177479ab8c6f0582705cdbae6c06bb34
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:47.692360+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "user_id": "default", "authorized": true}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 177479ab8c6f0582705cdbae6c06bb34
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: authorized
+    value: true
+  - name: authorizationUrl
+    value:
+  time:timestamp: '2026-10-12T18:58:47.705888+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 177479ab8c6f0582705cdbae6c06bb34
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:47.706561+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: e3
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == true
+    result: true
+  time:timestamp: '2026-10-12T18:58:47.714099+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: e2
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T18:58:47.715138+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: e1
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == false
+    result: false
+  time:timestamp: '2026-10-12T18:58:47.721727+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1cb3f88c575ddb3bb9d4b37894012e03
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheet_title
+    value: Travel Authorization Request Processing
+  - name: sheet_name
+    value: Travel Requests
+  - name: rows
+    value: '100'
+  - name: columns
+    value: '7'
+  time:timestamp: '2026-10-12T18:58:47.722862+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1cb3f88c575ddb3bb9d4b37894012e03
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:49.189842+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSpreadsheet", "spreadsheetId": "19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo",
+      "sheetId": 277393137, "sheetTitle": "Travel Requests"}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1cb3f88c575ddb3bb9d4b37894012e03
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: travelRequestsSheetId
+    value: 277393137
+  time:timestamp: '2026-10-12T18:58:49.201350+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Requests Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1cb3f88c575ddb3bb9d4b37894012e03
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:49.201627+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Authorizations Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 5dd680e61ec545c78082deeb00e3ca90
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: sheet_title
+    value: Travel Authorizations
+  - name: rows
+    value: '100'
+  - name: columns
+    value: '9'
+  time:timestamp: '2026-10-12T18:58:49.209973+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Authorizations Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 5dd680e61ec545c78082deeb00e3ca90
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:49.924713+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSheet", "sheetId": 1761702351, "title":
+      "Travel Authorizations"}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Authorizations Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 5dd680e61ec545c78082deeb00e3ca90
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: travelAuthorizationsSheetId
+    value: 1761702351
+  time:timestamp: '2026-10-12T18:58:49.938253+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Create Travel Authorizations Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 5dd680e61ec545c78082deeb00e3ca90
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:49.938460+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Requests Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: 8a5742d465e3ba93ec53933ad1d97ba5
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Requests'!A1:G1"
+  - name: values
+    value: '[["Request ID","Employee Name","Destination","Start Date","End Date","Travel
+      Purpose","Personal Car Requested"]]'
+  time:timestamp: '2026-10-12T18:58:49.946529+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Requests Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: 8a5742d465e3ba93ec53933ad1d97ba5
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:50.379324+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Travel
+      Requests''!A1:G1", "updatedCells": 7}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Requests Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: 8a5742d465e3ba93ec53933ad1d97ba5
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:50.380245+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Authorizations Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 5187e47420408c476b47c3a1f3b68c1c
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Authorizations'!A1:I1"
+  - name: values
+    value: '[["Request ID","Employee Name","Destination","Start Date","End Date","Travel
+      Purpose","Personal Car Requested","Car Decision","Status"]]'
+  time:timestamp: '2026-10-12T18:58:50.391238+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Authorizations Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 5187e47420408c476b47c3a1f3b68c1c
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:50.797022+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Authorizations Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 5187e47420408c476b47c3a1f3b68c1c
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:50.796407+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Travel
+      Authorizations''!A1:I1", "updatedCells": 9}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Prepare Travel Request Row
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: eb98a268edc202eff3d136556c26fc40
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:50.812806+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Prepare Travel Request Row
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: eb98a268edc202eff3d136556c26fc40
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: travelRequestRow
+    value:
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - false
+  time:timestamp: '2026-10-12T18:58:50.812551+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Append Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: 444087faf4d1c11886e1d4fb837e4e31
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Requests'!A:G"
+  - name: values
+    value:
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - false
+  time:timestamp: '2026-10-12T18:58:50.829227+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Append Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: 444087faf4d1c11886e1d4fb837e4e31
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:51.666123+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Append Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: 444087faf4d1c11886e1d4fb837e4e31
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:51.665359+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "appendData", "updatedRange": "''Travel Requests''!A2:G2",
+      "updatedRows": 1, "updatedCells": 7}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Read Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 6b28a73c06137237a25c0eb465930278
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Requests'!A2:G2"
+  time:timestamp: '2026-10-12T18:58:51.679463+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Read Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 6b28a73c06137237a25c0eb465930278
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:52.107100+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Travel Requests''!A2:G2",
+      "values": [["TRAVEL-TEST-01", "Test Employee", "Berlin", "2026-11-10", "2026-11-12",
+      "Project meeting", "FALSE"]]}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Read Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 6b28a73c06137237a25c0eb465930278
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:52.121894+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Read Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 6b28a73c06137237a25c0eb465930278
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: travelRequestData
+    value:
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - 'FALSE'
+  time:timestamp: '2026-10-12T18:58:52.121632+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Prepare Travel Authorization Row
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 8c5a48442bc2cbea3a88e13470e74c8b
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: travelAuthorizationRow
+    value:
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - 'FALSE'
+      - ''
+      - ''
+  time:timestamp: '2026-10-12T18:58:52.132753+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Prepare Travel Authorization Row
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 8c5a48442bc2cbea3a88e13470e74c8b
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:52.132899+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 43527311cd0f00cecd559ab9e09b137d
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Authorizations'!A:I"
+  - name: values
+    value:
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - 'FALSE'
+      - ''
+      - ''
+  time:timestamp: '2026-10-12T18:58:52.147973+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 43527311cd0f00cecd559ab9e09b137d
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:52.562994+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "appendData", "updatedRange": "''Travel Authorizations''!A2:I2",
+      "updatedRows": 1, "updatedCells": 9}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 43527311cd0f00cecd559ab9e09b137d
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:52.563542+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: e5
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T18:58:52.579286+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: e6
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.personalCarRequested == true
+    result: false
+  time:timestamp: '2026-10-12T18:58:52.578828+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Set Authorization Status Submitted
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: c795c36a3296b616e82d39e0846d4548
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:52.590121+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Set Authorization Status Submitted
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: c795c36a3296b616e82d39e0846d4548
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: authorizationStatus
+    value: Submitted
+  time:timestamp: '2026-10-12T18:58:52.589942+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Authorization Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: b229a41c8b1bc64a3ff014c88f98edfb
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Authorizations'!I2"
+  - name: value
+    value: Submitted
+  time:timestamp: '2026-10-12T18:58:52.608667+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Authorization Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: b229a41c8b1bc64a3ff014c88f98edfb
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:53.043809+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Write Authorization Status Submitted
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a15
+  cpee:activity: a15
+  cpee:activity_uuid: b229a41c8b1bc64a3ff014c88f98edfb
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:53.043147+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Travel Authorizations''!I2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Format Travel Requests Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a24
+  cpee:activity: a24
+  cpee:activity_uuid: 7cdb0a5c9ffb2c811c8e81b131ce59e3
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: sheetId
+    value: 277393137
+  - name: startRowIndex
+    value: '0'
+  - name: endRowIndex
+    value: '1'
+  - name: startColumnIndex
+    value: '0'
+  - name: endColumnIndex
+    value: '7'
+  - name: bold
+    value: 'true'
+  - name: fontSize
+    value: '12'
+  time:timestamp: '2026-10-12T18:58:53.067460+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Format Travel Requests Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a24
+  cpee:activity: a24
+  cpee:activity_uuid: 7cdb0a5c9ffb2c811c8e81b131ce59e3
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:53.515109+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "formatRange", "formattedRange": {"sheetId":
+      277393137, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex":
+      7}, "fields": ["userEnteredFormat.textFormat.bold", "userEnteredFormat.textFormat.fontSize"]}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Format Travel Requests Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a24
+  cpee:activity: a24
+  cpee:activity_uuid: 7cdb0a5c9ffb2c811c8e81b131ce59e3
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:53.516048+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Format Travel Authorizations Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a28
+  cpee:activity: a28
+  cpee:activity_uuid: 21243b1bb552dce86d502ef342871675
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: sheetId
+    value: 1761702351
+  - name: startRowIndex
+    value: '0'
+  - name: endRowIndex
+    value: '1'
+  - name: startColumnIndex
+    value: '0'
+  - name: endColumnIndex
+    value: '9'
+  - name: bold
+    value: 'true'
+  - name: fontSize
+    value: '12'
+  time:timestamp: '2026-10-12T18:58:53.536864+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Format Travel Authorizations Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a28
+  cpee:activity: a28
+  cpee:activity_uuid: 21243b1bb552dce86d502ef342871675
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:53.985461+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Resize Travel Requests Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: af700aefde6ef19fd9de2343913c4996
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: sheetId
+    value: 277393137
+  - name: dimension
+    value: COLUMNS
+  - name: startIndex
+    value: '0'
+  - name: endIndex
+    value: '7'
+  - name: pixelSize
+    value: '150'
+  time:timestamp: '2026-10-12T18:58:54.003862+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Format Travel Authorizations Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a28
+  cpee:activity: a28
+  cpee:activity_uuid: 21243b1bb552dce86d502ef342871675
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:53.984867+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "formatRange", "formattedRange": {"sheetId":
+      1761702351, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex":
+      9}, "fields": ["userEnteredFormat.textFormat.bold", "userEnteredFormat.textFormat.fontSize"]}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Resize Travel Requests Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: af700aefde6ef19fd9de2343913c4996
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:54.482022+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Resize Travel Requests Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a31
+  cpee:activity: a31
+  cpee:activity_uuid: af700aefde6ef19fd9de2343913c4996
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:54.480918+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "resizeDimension", "sheetId": 277393137, "dimension":
+      "COLUMNS", "startIndex": 0, "endIndex": 7, "pixelSize": 150}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Resize Travel Authorizations Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a35
+  cpee:activity: a35
+  cpee:activity_uuid: 4cda424f5392c1b95dc713d14ccf3fd2
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: sheetId
+    value: 1761702351
+  - name: dimension
+    value: COLUMNS
+  - name: startIndex
+    value: '0'
+  - name: endIndex
+    value: '9'
+  - name: pixelSize
+    value: '150'
+  time:timestamp: '2026-10-12T18:58:54.504978+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Resize Travel Authorizations Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a35
+  cpee:activity: a35
+  cpee:activity_uuid: 4cda424f5392c1b95dc713d14ccf3fd2
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:54.977663+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "resizeDimension", "sheetId": 1761702351, "dimension":
+      "COLUMNS", "startIndex": 0, "endIndex": 9, "pixelSize": 150}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Resize Travel Authorizations Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a35
+  cpee:activity: a35
+  cpee:activity_uuid: 4cda424f5392c1b95dc713d14ccf3fd2
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:54.978458+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a38
+  cpee:activity: a38
+  cpee:activity_uuid: 8690cc6dc2c2835e3800345d32f56784
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Authorizations'!A1:I"
+  time:timestamp: '2026-10-12T18:58:54.993349+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a38
+  cpee:activity: a38
+  cpee:activity_uuid: 8690cc6dc2c2835e3800345d32f56784
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:55.400864+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Travel Authorizations''!A1:I101",
+      "values": [["Request ID", "Employee Name", "Destination", "Start Date", "End
+      Date", "Travel Purpose", "Personal Car Requested", "Car Decision", "Status"],
+      ["TRAVEL-TEST-01", "Test Employee", "Berlin", "2026-11-10", "2026-11-12", "Project
+      meeting", "FALSE", "", "Submitted"]]}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a38
+  cpee:activity: a38
+  cpee:activity_uuid: 8690cc6dc2c2835e3800345d32f56784
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:55.414196+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Authorization
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a38
+  cpee:activity: a38
+  cpee:activity_uuid: 8690cc6dc2c2835e3800345d32f56784
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: verifiedTravelAuthorizationData
+    value:
+    - - Request ID
+      - Employee Name
+      - Destination
+      - Start Date
+      - End Date
+      - Travel Purpose
+      - Personal Car Requested
+      - Car Decision
+      - Status
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - 'FALSE'
+      - ''
+      - Submitted
+  time:timestamp: '2026-10-12T18:58:55.414010+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 6022d20e7ec0603ee23e0394203ab7da
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 19G9qzNS2OFNg_cY5kRbqm76vOTP4WfSafYt7WI-qzKo
+  - name: range
+    value: "'Travel Requests'!A1:G"
+  time:timestamp: '2026-10-12T18:58:55.428336+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 6022d20e7ec0603ee23e0394203ab7da
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T18:58:55.952089+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Travel Requests''!A1:G101",
+      "values": [["Request ID", "Employee Name", "Destination", "Start Date", "End
+      Date", "Travel Purpose", "Personal Car Requested"], ["TRAVEL-TEST-01", "Test
+      Employee", "Berlin", "2026-11-10", "2026-11-12", "Project meeting", "FALSE"]]}'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 6022d20e7ec0603ee23e0394203ab7da
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: verifiedTravelRequestData
+    value:
+    - - Request ID
+      - Employee Name
+      - Destination
+      - Start Date
+      - End Date
+      - Travel Purpose
+      - Personal Car Requested
+    - - TRAVEL-TEST-01
+      - Test Employee
+      - Berlin
+      - '2026-11-10'
+      - '2026-11-12'
+      - Project meeting
+      - 'FALSE'
+  time:timestamp: '2026-10-12T18:58:55.962868+02:00'
+---
+event:
+  concept:instance: 112798
+  concept:name: Verify Travel Request
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 6022d20e7ec0603ee23e0394203ab7da
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T18:58:55.963051+02:00'
+---
+event:
+  concept:instance: 112798
+  id:id: ex-ante
+  cpee:instance: a3bcbf59-4582-4891-952c-870cf599cd4f
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2026-10-12T18:58:55.963561+02:00'
