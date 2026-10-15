@@ -1,0 +1,3399 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 112721
+    cpee:name: Thesis_Workflow_Invoice_Registration
+    cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2026-10-12T13:49:52.260146+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  time:timestamp: '2026-10-12T13:49:52.281477+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e11" mode="post_test" condition="data.authorized == false">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a1" endpoint="checkAuthorization">
+          <parameters>
+            <label>Check Authorization</label>
+            <color/>
+            <arguments>
+              <api_key>BACKEND_API_KEY</api_key>
+              <user_id>default</user_id>
+            </arguments>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.authorized = result['authorized']; data.authorizationUrl = result['authorization_url']</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e1" mode="exclusive" label="Authorized?">
+          <alternative eid="e2" condition="data.authorized == true">
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <otherwise eid="e3">
+            <manipulate id="a2" label="Authorization Required">
+              <code>data.authorizationUrl = data.authorizationUrl</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <stop id="a4"/>
+          </otherwise>
+        </choose>
+      </loop>
+      <call id="a3" endpoint="createSpreadsheet">
+        <parameters>
+          <label>Create Invoice Registration Spreadsheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheet_title>Invoice Registration</spreadsheet_title>
+            <sheet_name>Invoice Registration</sheet_name>
+            <rows>100</rows>
+            <columns>3</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.spreadsheetId = result['spreadsheetId']; data.registrationSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a5" endpoint="createSheet">
+        <parameters>
+          <label>Create Price Lists Sheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheet_title>Price Lists</sheet_title>
+            <rows>100</rows>
+            <columns>1</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.priceListsSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a6" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Invoice Registration Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Invoice Registration'!A1:C1</range>
+            <values>[["Invoice Name","Currency","Price List"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a7" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Price Lists Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Price Lists'!A1:A1</range>
+            <values>[["Price List"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a8" endpoint="appendData">
+        <parameters>
+          <label>Append Existing Price Lists</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Price Lists'!A:A</range>
+            <values>[["Price List A"],["Price List B"],["Price List C"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <parallel eid="e4" wait="-1" cancel="last">
+        <parallel_branch eid="e5">
+          <call id="a9" endpoint="updateCell">
+            <parameters>
+              <label>Write Invoice Name</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Invoice Registration'!A2</range>
+                <value>!data.invoiceName</value>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+        </parallel_branch>
+        <parallel_branch eid="e6">
+          <call id="a10" endpoint="updateCell">
+            <parameters>
+              <label>Write Invoice Currency</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Invoice Registration'!B2</range>
+                <value>!data.invoiceCurrency</value>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+        </parallel_branch>
+        <parallel_branch eid="e7">
+          <call id="a11" endpoint="readData">
+            <parameters>
+              <label>Read Price Lists</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Price Lists'!A2:A100</range>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result">data.priceListData = result['values']</finalize>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+          <manipulate id="a12" label="Check Price List">
+            <code>available_price_lists = (data.priceListData || []).flatten.map { |value| value.to_s.strip }; requested_price_list = data.requestedPriceList.to_s.strip; data.priceListExists = !requested_price_list.empty? &amp;&amp; available_price_lists.include?(requested_price_list)</code>
+            <annotations>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+              </_logging_behavior>
+              <_context_data_analysis>
+                <probes/>
+              </_context_data_analysis>
+            </annotations>
+          </manipulate>
+          <choose eid="e8" mode="exclusive" label="Existing Price List?">
+            <alternative eid="e9" condition="data.priceListExists == true">
+              <manipulate id="a13" label="Choose Existing Price List">
+                <code>data.selectedPriceList = data.requestedPriceList</code>
+                <annotations>
+                  <_logging_behavior>
+                    <_exclude>false</_exclude>
+                  </_logging_behavior>
+                  <_context_data_analysis>
+                    <probes/>
+                  </_context_data_analysis>
+                </annotations>
+              </manipulate>
+              <_probability>
+                <_probability_min/>
+                <_probability_max/>
+                <_probability_avg/>
+              </_probability>
+            </alternative>
+            <otherwise eid="e10">
+              <loop eid="e12" mode="post_test" condition="data.selectedPriceList.empty?">
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+                <_annotations>
+                  <_generic/>
+                  <_logging_behavior>
+                    <_iteration>false</_iteration>
+                  </_logging_behavior>
+                </_annotations>
+                <call id="a21" endpoint="worklist">
+                  <parameters>
+                    <label>Define New Price List</label>
+                    <color/>
+                    <arguments>
+                      <orgmodel>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/org.xml</orgmodel>
+                      <form>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/forms/define_price_list.html</form>
+                      <role>Regular</role>
+                      <priority>1</priority>
+                      <handling>single</handling>
+                      <restrictions/>
+                      <data>
+                        <invoice_name>!data.invoiceName</invoice_name>
+                        <invoice_currency>!data.invoiceCurrency</invoice_currency>
+                        <requested_price_list>!data.requestedPriceList</requested_price_list>
+                      </data>
+                    </arguments>
+                  </parameters>
+                  <code>
+                    <signal>false</signal>
+                    <prepare/>
+                    <finalize output="result">data.selectedPriceList = result['data']['new_price_list'].to_s.strip
+    data.newPriceListData = [[data.selectedPriceList]]</finalize>
+                    <update output="result"/>
+                    <rescue output="result"/>
+                  </code>
+                  <annotations>
+                    <_generic/>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                      <_include>false</_include>
+                    </_logging_behavior>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                    <code>
+                      <description/>
+                    </code>
+                  </documentation>
+                </call>
+              </loop>
+              <call id="a15" endpoint="appendData">
+                <parameters>
+                  <label>Write New Price List</label>
+                  <color/>
+                  <arguments>
+                    <api_key>BACKEND_API_KEY</api_key>
+                    <user_id>default</user_id>
+                    <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                    <range>'Price Lists'!A:A</range>
+                    <values>!data.newPriceListData</values>
+                  </arguments>
+                </parameters>
+                <code>
+                  <signal>false</signal>
+                  <prepare/>
+                  <finalize output="result"/>
+                  <update output="result"/>
+                  <rescue output="result"/>
+                </code>
+                <annotations>
+                  <_generic/>
+                  <_logging_behavior>
+                    <_exclude>false</_exclude>
+                    <_include>false</_include>
+                  </_logging_behavior>
+                  <_timing>
+                    <_timing_weight/>
+                    <_timing_avg/>
+                    <explanations/>
+                  </_timing>
+                  <_shifting>
+                    <_shifting_type>Duration</_shifting_type>
+                  </_shifting>
+                  <_context_data_analysis>
+                    <probes/>
+                    <ips/>
+                  </_context_data_analysis>
+                  <report>
+                    <url/>
+                  </report>
+                  <_notes>
+                    <_notes_general/>
+                  </_notes>
+                </annotations>
+                <documentation>
+                  <input/>
+                  <output/>
+                  <implementation>
+                    <description/>
+                  </implementation>
+                  <code>
+                    <description/>
+                  </code>
+                </documentation>
+              </call>
+            </otherwise>
+          </choose>
+        </parallel_branch>
+      </parallel>
+      <call id="a16" endpoint="updateCell">
+        <parameters>
+          <label>Write Selected Price List</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Invoice Registration'!C2</range>
+            <value>!data.selectedPriceList</value>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a17" endpoint="formatRange">
+        <parameters>
+          <label>Format Invoice Registration Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.registrationSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>3</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a26" endpoint="formatRange">
+        <parameters>
+          <label>Format Price Lists Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.priceListsSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>1</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a18" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Invoice Registration Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.registrationSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>3</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a22" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Price Lists Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.priceListsSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>1</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a19" endpoint="readData">
+        <parameters>
+          <label>Verify Invoice Registration</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Invoice Registration'!A1:C</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedRegistrationData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a14" endpoint="readData">
+        <parameters>
+          <label>Verify Price Lists</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Price Lists'!A1:A</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedPriceListsData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <stop id="a20"/>
+    </description>
+  cpee:change_uuid: 6e88db695d907a54d4adf3e8b40979dd556ac7b7
+  time:timestamp: '2026-10-12T13:49:52.298726+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e11" mode="post_test" condition="data.authorized == false">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a1" endpoint="checkAuthorization">
+          <parameters>
+            <label>Check Authorization</label>
+            <color/>
+            <arguments>
+              <api_key>BACKEND_API_KEY</api_key>
+              <user_id>default</user_id>
+            </arguments>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.authorized = result['authorized']; data.authorizationUrl = result['authorization_url']</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e1" mode="exclusive" label="Authorized?">
+          <alternative eid="e2" condition="data.authorized == true">
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <otherwise eid="e3">
+            <manipulate id="a2" label="Authorization Required">
+              <code>data.authorizationUrl = data.authorizationUrl</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <stop id="a4"/>
+          </otherwise>
+        </choose>
+      </loop>
+      <call id="a3" endpoint="createSpreadsheet">
+        <parameters>
+          <label>Create Invoice Registration Spreadsheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheet_title>Invoice Registration</spreadsheet_title>
+            <sheet_name>Invoice Registration</sheet_name>
+            <rows>100</rows>
+            <columns>3</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.spreadsheetId = result['spreadsheetId']; data.registrationSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a5" endpoint="createSheet">
+        <parameters>
+          <label>Create Price Lists Sheet</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheet_title>Price Lists</sheet_title>
+            <rows>100</rows>
+            <columns>1</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.priceListsSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a6" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Invoice Registration Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Invoice Registration'!A1:C1</range>
+            <values>[["Invoice Name","Currency","Price List"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a7" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Price Lists Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Price Lists'!A1:A1</range>
+            <values>[["Price List"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a8" endpoint="appendData">
+        <parameters>
+          <label>Append Existing Price Lists</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Price Lists'!A:A</range>
+            <values>[["Price List A"],["Price List B"],["Price List C"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <parallel eid="e4" wait="-1" cancel="last">
+        <parallel_branch eid="e5">
+          <call id="a9" endpoint="updateCell">
+            <parameters>
+              <label>Write Invoice Name</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Invoice Registration'!A2</range>
+                <value>!data.invoiceName</value>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+        </parallel_branch>
+        <parallel_branch eid="e6">
+          <call id="a10" endpoint="updateCell">
+            <parameters>
+              <label>Write Invoice Currency</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Invoice Registration'!B2</range>
+                <value>!data.invoiceCurrency</value>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result"/>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+        </parallel_branch>
+        <parallel_branch eid="e7">
+          <call id="a11" endpoint="readData">
+            <parameters>
+              <label>Read Price Lists</label>
+              <color/>
+              <arguments>
+                <api_key>BACKEND_API_KEY</api_key>
+                <user_id>default</user_id>
+                <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                <range>'Price Lists'!A2:A100</range>
+              </arguments>
+            </parameters>
+            <code>
+              <signal>false</signal>
+              <prepare/>
+              <finalize output="result">data.priceListData = result['values']</finalize>
+              <update output="result"/>
+              <rescue output="result"/>
+            </code>
+            <annotations>
+              <_generic/>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+                <_include>false</_include>
+              </_logging_behavior>
+              <_timing>
+                <_timing_weight/>
+                <_timing_avg/>
+                <explanations/>
+              </_timing>
+              <_shifting>
+                <_shifting_type>Duration</_shifting_type>
+              </_shifting>
+              <_context_data_analysis>
+                <probes/>
+                <ips/>
+              </_context_data_analysis>
+              <report>
+                <url/>
+              </report>
+              <_notes>
+                <_notes_general/>
+              </_notes>
+            </annotations>
+            <documentation>
+              <input/>
+              <output/>
+              <implementation>
+                <description/>
+              </implementation>
+              <code>
+                <description/>
+              </code>
+            </documentation>
+          </call>
+          <manipulate id="a12" label="Check Price List">
+            <code>available_price_lists = (data.priceListData || []).flatten.map { |value| value.to_s.strip }; requested_price_list = data.requestedPriceList.to_s.strip; data.priceListExists = !requested_price_list.empty? &amp;&amp; available_price_lists.include?(requested_price_list)</code>
+            <annotations>
+              <_logging_behavior>
+                <_exclude>false</_exclude>
+              </_logging_behavior>
+              <_context_data_analysis>
+                <probes/>
+              </_context_data_analysis>
+            </annotations>
+          </manipulate>
+          <choose eid="e8" mode="exclusive" label="Existing Price List?">
+            <alternative eid="e9" condition="data.priceListExists == true">
+              <manipulate id="a13" label="Choose Existing Price List">
+                <code>data.selectedPriceList = data.requestedPriceList</code>
+                <annotations>
+                  <_logging_behavior>
+                    <_exclude>false</_exclude>
+                  </_logging_behavior>
+                  <_context_data_analysis>
+                    <probes/>
+                  </_context_data_analysis>
+                </annotations>
+              </manipulate>
+              <_probability>
+                <_probability_min/>
+                <_probability_max/>
+                <_probability_avg/>
+              </_probability>
+            </alternative>
+            <otherwise eid="e10">
+              <loop eid="e12" mode="post_test" condition="data.selectedPriceList.empty?">
+                <_probability>
+                  <_probability_min/>
+                  <_probability_max/>
+                  <_probability_avg/>
+                </_probability>
+                <_annotations>
+                  <_generic/>
+                  <_logging_behavior>
+                    <_iteration>false</_iteration>
+                  </_logging_behavior>
+                </_annotations>
+                <call id="a21" endpoint="worklist">
+                  <parameters>
+                    <label>Define New Price List</label>
+                    <color/>
+                    <arguments>
+                      <orgmodel>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/org.xml</orgmodel>
+                      <form>https://lehre.bpm.in.tum.de/~ge65yed/Thesis/worklists/forms/define_price_list.html</form>
+                      <role>Regular</role>
+                      <priority>1</priority>
+                      <handling>single</handling>
+                      <restrictions/>
+                      <data>
+                        <invoice_name>!data.invoiceName</invoice_name>
+                        <invoice_currency>!data.invoiceCurrency</invoice_currency>
+                        <requested_price_list>!data.requestedPriceList</requested_price_list>
+                      </data>
+                    </arguments>
+                  </parameters>
+                  <code>
+                    <signal>false</signal>
+                    <prepare/>
+                    <finalize output="result">data.selectedPriceList = result['data']['new_price_list'].to_s.strip
+    data.newPriceListData = [[data.selectedPriceList]]</finalize>
+                    <update output="result"/>
+                    <rescue output="result"/>
+                  </code>
+                  <annotations>
+                    <_generic/>
+                    <_logging_behavior>
+                      <_exclude>false</_exclude>
+                      <_include>false</_include>
+                    </_logging_behavior>
+                    <_timing>
+                      <_timing_weight/>
+                      <_timing_avg/>
+                      <explanations/>
+                    </_timing>
+                    <_shifting>
+                      <_shifting_type>Duration</_shifting_type>
+                    </_shifting>
+                    <_context_data_analysis>
+                      <probes/>
+                      <ips/>
+                    </_context_data_analysis>
+                    <report>
+                      <url/>
+                    </report>
+                    <_notes>
+                      <_notes_general/>
+                    </_notes>
+                  </annotations>
+                  <documentation>
+                    <input/>
+                    <output/>
+                    <implementation>
+                      <description/>
+                    </implementation>
+                    <code>
+                      <description/>
+                    </code>
+                  </documentation>
+                </call>
+              </loop>
+              <call id="a15" endpoint="appendData">
+                <parameters>
+                  <label>Write New Price List</label>
+                  <color/>
+                  <arguments>
+                    <api_key>BACKEND_API_KEY</api_key>
+                    <user_id>default</user_id>
+                    <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+                    <range>'Price Lists'!A:A</range>
+                    <values>!data.newPriceListData</values>
+                  </arguments>
+                </parameters>
+                <code>
+                  <signal>false</signal>
+                  <prepare/>
+                  <finalize output="result"/>
+                  <update output="result"/>
+                  <rescue output="result"/>
+                </code>
+                <annotations>
+                  <_generic/>
+                  <_logging_behavior>
+                    <_exclude>false</_exclude>
+                    <_include>false</_include>
+                  </_logging_behavior>
+                  <_timing>
+                    <_timing_weight/>
+                    <_timing_avg/>
+                    <explanations/>
+                  </_timing>
+                  <_shifting>
+                    <_shifting_type>Duration</_shifting_type>
+                  </_shifting>
+                  <_context_data_analysis>
+                    <probes/>
+                    <ips/>
+                  </_context_data_analysis>
+                  <report>
+                    <url/>
+                  </report>
+                  <_notes>
+                    <_notes_general/>
+                  </_notes>
+                </annotations>
+                <documentation>
+                  <input/>
+                  <output/>
+                  <implementation>
+                    <description/>
+                  </implementation>
+                  <code>
+                    <description/>
+                  </code>
+                </documentation>
+              </call>
+            </otherwise>
+          </choose>
+        </parallel_branch>
+      </parallel>
+      <call id="a16" endpoint="updateCell">
+        <parameters>
+          <label>Write Selected Price List</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Invoice Registration'!C2</range>
+            <value>!data.selectedPriceList</value>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a17" endpoint="formatRange">
+        <parameters>
+          <label>Format Invoice Registration Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.registrationSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>3</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a26" endpoint="formatRange">
+        <parameters>
+          <label>Format Price Lists Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.priceListsSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>1</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a18" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Invoice Registration Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.registrationSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>3</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a22" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Price Lists Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.priceListsSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>1</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a19" endpoint="readData">
+        <parameters>
+          <label>Verify Invoice Registration</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Invoice Registration'!A1:C</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedRegistrationData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a14" endpoint="readData">
+        <parameters>
+          <label>Verify Price Lists</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Price Lists'!A1:A</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedPriceListsData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  cpee:change_uuid: ca8bf766c7e857d40967e27607eb12dee2a98dd7
+  time:timestamp: '2026-10-12T13:52:11.588573+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: invoiceName
+    value: Invoice-Test-01
+  time:timestamp: '2026-10-12T13:52:54.507984+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: invoiceCurrency
+    value: EUR
+  time:timestamp: '2026-10-12T13:53:17.026346+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: requestedPriceList
+    value: Price List A
+  time:timestamp: '2026-10-12T13:53:35.396768+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 0ea3388a1f28e5ef9493c77c42ad240e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  time:timestamp: '2026-10-12T13:57:25.439141+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2026-10-12T13:57:25.438320+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 0ea3388a1f28e5ef9493c77c42ad240e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:25.532234+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "user_id": "default", "authorized": true}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 0ea3388a1f28e5ef9493c77c42ad240e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: authorized
+    value: true
+  - name: authorizationUrl
+    value:
+  time:timestamp: '2026-10-12T13:57:25.547462+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 0ea3388a1f28e5ef9493c77c42ad240e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:25.547658+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: e2
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == true
+    result: true
+  time:timestamp: '2026-10-12T13:57:25.559723+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: e1
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T13:57:25.560564+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: e11
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == false
+    result: false
+  time:timestamp: '2026-10-12T13:57:25.572041+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Invoice Registration Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 694f38122f2b4e32367f6c93146db29e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheet_title
+    value: Invoice Registration
+  - name: sheet_name
+    value: Invoice Registration
+  - name: rows
+    value: '100'
+  - name: columns
+    value: '3'
+  time:timestamp: '2026-10-12T13:57:25.573021+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Invoice Registration Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 694f38122f2b4e32367f6c93146db29e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:26.665707+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSpreadsheet", "spreadsheetId": "1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4",
+      "sheetId": 1813036876, "sheetTitle": "Invoice Registration"}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Invoice Registration Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 694f38122f2b4e32367f6c93146db29e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:26.682709+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Price Lists Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: c4c9b6266dd3f31fb21d594fc1f0ba91
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: sheet_title
+    value: Price Lists
+  - name: rows
+    value: '100'
+  - name: columns
+    value: '1'
+  time:timestamp: '2026-10-12T13:57:26.691785+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Invoice Registration Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 694f38122f2b4e32367f6c93146db29e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: registrationSheetId
+    value: 1813036876
+  time:timestamp: '2026-10-12T13:57:26.682448+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Price Lists Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: c4c9b6266dd3f31fb21d594fc1f0ba91
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:27.598261+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSheet", "sheetId": 780173537, "title":
+      "Price Lists"}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Price Lists Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: c4c9b6266dd3f31fb21d594fc1f0ba91
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: priceListsSheetId
+    value: 780173537
+  time:timestamp: '2026-10-12T13:57:27.611930+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Create Price Lists Sheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSheet
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: c4c9b6266dd3f31fb21d594fc1f0ba91
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:27.612504+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Registration Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 7cf10954469f0002df1f1a771b754d7c
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Invoice Registration'!A1:C1"
+  - name: values
+    value: '[["Invoice Name","Currency","Price List"]]'
+  time:timestamp: '2026-10-12T13:57:27.621581+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Registration Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 7cf10954469f0002df1f1a771b754d7c
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:28.001521+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Invoice
+      Registration''!A1:C1", "updatedCells": 3}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Registration Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 7cf10954469f0002df1f1a771b754d7c
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:28.002053+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Price Lists Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: 9c28c4fae03e004556edcfc4698148c8
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Price Lists'!A1:A1"
+  - name: values
+    value: '[["Price List"]]'
+  time:timestamp: '2026-10-12T13:57:28.029899+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Price Lists Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: 9c28c4fae03e004556edcfc4698148c8
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:28.418533+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateManyCells", "updatedRange": "''Price Lists''!A1",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Append Existing Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: 7886393c54245d01873fc9617e0a68b6
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Price Lists'!A:A"
+  - name: values
+    value: '[["Price List A"],["Price List B"],["Price List C"]]'
+  time:timestamp: '2026-10-12T13:57:28.430223+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Price Lists Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: 9c28c4fae03e004556edcfc4698148c8
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:28.419185+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Append Existing Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: 7886393c54245d01873fc9617e0a68b6
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:28.807824+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Append Existing Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/appendData
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: 7886393c54245d01873fc9617e0a68b6
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:28.806962+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "appendData", "updatedRange": "''Price Lists''!A2:A4",
+      "updatedRows": 3, "updatedCells": 3}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Read Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: d589cb6f880959be94465245d0a56abb
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Price Lists'!A2:A100"
+  time:timestamp: '2026-10-12T13:57:28.844077+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Name
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 8f7d32fd4fe54a8f59b554ebf417adf3
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Invoice Registration'!A2"
+  - name: value
+    value: Invoice-Test-01
+  time:timestamp: '2026-10-12T13:57:28.848137+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Currency
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 3b62630e051ae96f52062b480479497d
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Invoice Registration'!B2"
+  - name: value
+    value: EUR
+  time:timestamp: '2026-10-12T13:57:28.851136+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Read Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: d589cb6f880959be94465245d0a56abb
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:29.214061+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Price Lists''!A2:A100",
+      "values": [["Price List A"], ["Price List B"], ["Price List C"]]}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Read Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: d589cb6f880959be94465245d0a56abb
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: priceListData
+    value:
+    - - Price List A
+    - - Price List B
+    - - Price List C
+  time:timestamp: '2026-10-12T13:57:29.226467+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Read Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a11
+  cpee:activity: a11
+  cpee:activity_uuid: d589cb6f880959be94465245d0a56abb
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:29.226659+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Check Price List
+  id:id: a12
+  cpee:activity: a12
+  cpee:activity_uuid: 24dca0ed8f08babe3db7c5adb577bc47
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: priceListExists
+    value: true
+  time:timestamp: '2026-10-12T13:57:29.236419+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Check Price List
+  id:id: a12
+  cpee:activity: a12
+  cpee:activity_uuid: 24dca0ed8f08babe3db7c5adb577bc47
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:29.236667+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: e9
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.priceListExists == true
+    result: true
+  time:timestamp: '2026-10-12T13:57:29.246186+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Choose Existing Price List
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: 53040dc86027ee9af92b3b1cb1cdf8b8
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:29.256502+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Choose Existing Price List
+  id:id: a13
+  cpee:activity: a13
+  cpee:activity_uuid: 53040dc86027ee9af92b3b1cb1cdf8b8
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: selectedPriceList
+    value: Price List A
+  time:timestamp: '2026-10-12T13:57:29.255843+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: e8
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T13:57:29.257094+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Name
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 8f7d32fd4fe54a8f59b554ebf417adf3
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:29.567073+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Invoice Registration''!A2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Name
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 8f7d32fd4fe54a8f59b554ebf417adf3
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:29.568296+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Currency
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 3b62630e051ae96f52062b480479497d
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:29.900087+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Invoice Registration''!B2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112721
+  id:id: e4
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T13:57:29.904042+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Invoice Currency
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 3b62630e051ae96f52062b480479497d
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:29.900590+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Selected Price List
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 9bd93cba8b21c124d3d15fb5f5a8f91e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Invoice Registration'!C2"
+  - name: value
+    value: Price List A
+  time:timestamp: '2026-10-12T13:57:29.921988+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Selected Price List
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 9bd93cba8b21c124d3d15fb5f5a8f91e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:30.715358+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Write Selected Price List
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateCell
+  id:id: a16
+  cpee:activity: a16
+  cpee:activity_uuid: 9bd93cba8b21c124d3d15fb5f5a8f91e
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:30.714934+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "updateCell", "updatedRange": "''Invoice Registration''!C2",
+      "updatedCells": 1}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Format Invoice Registration Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: 3c5dad0c890ba69e759d241bb35889dd
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: sheetId
+    value: 1813036876
+  - name: startRowIndex
+    value: '0'
+  - name: endRowIndex
+    value: '1'
+  - name: startColumnIndex
+    value: '0'
+  - name: endColumnIndex
+    value: '3'
+  - name: bold
+    value: 'true'
+  - name: fontSize
+    value: '12'
+  time:timestamp: '2026-10-12T13:57:30.732951+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Format Invoice Registration Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: 3c5dad0c890ba69e759d241bb35889dd
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:31.123025+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Format Invoice Registration Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a17
+  cpee:activity: a17
+  cpee:activity_uuid: 3c5dad0c890ba69e759d241bb35889dd
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:31.122424+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "formatRange", "formattedRange": {"sheetId":
+      1813036876, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex":
+      3}, "fields": ["userEnteredFormat.textFormat.bold", "userEnteredFormat.textFormat.fontSize"]}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Format Price Lists Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a26
+  cpee:activity: a26
+  cpee:activity_uuid: e56238e085ead942de52f198bf2af5c4
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: sheetId
+    value: 780173537
+  - name: startRowIndex
+    value: '0'
+  - name: endRowIndex
+    value: '1'
+  - name: startColumnIndex
+    value: '0'
+  - name: endColumnIndex
+    value: '1'
+  - name: bold
+    value: 'true'
+  - name: fontSize
+    value: '12'
+  time:timestamp: '2026-10-12T13:57:31.140314+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Format Price Lists Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a26
+  cpee:activity: a26
+  cpee:activity_uuid: e56238e085ead942de52f198bf2af5c4
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:31.525208+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Format Price Lists Header
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/formatRange
+  id:id: a26
+  cpee:activity: a26
+  cpee:activity_uuid: e56238e085ead942de52f198bf2af5c4
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:31.524645+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "formatRange", "formattedRange": {"sheetId":
+      780173537, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex":
+      1}, "fields": ["userEnteredFormat.textFormat.bold", "userEnteredFormat.textFormat.fontSize"]}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Resize Invoice Registration Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 335b13884561744849076c197eb7e1f1
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: sheetId
+    value: 1813036876
+  - name: dimension
+    value: COLUMNS
+  - name: startIndex
+    value: '0'
+  - name: endIndex
+    value: '3'
+  - name: pixelSize
+    value: '150'
+  time:timestamp: '2026-10-12T13:57:31.549627+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Resize Invoice Registration Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 335b13884561744849076c197eb7e1f1
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:31.923643+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "resizeDimension", "sheetId": 1813036876, "dimension":
+      "COLUMNS", "startIndex": 0, "endIndex": 3, "pixelSize": 150}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Resize Invoice Registration Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a18
+  cpee:activity: a18
+  cpee:activity_uuid: 335b13884561744849076c197eb7e1f1
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:31.924045+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Resize Price Lists Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a22
+  cpee:activity: a22
+  cpee:activity_uuid: be880c6863223e53ecaa81d76d06c469
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: sheetId
+    value: 780173537
+  - name: dimension
+    value: COLUMNS
+  - name: startIndex
+    value: '0'
+  - name: endIndex
+    value: '1'
+  - name: pixelSize
+    value: '150'
+  time:timestamp: '2026-10-12T13:57:31.947549+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Resize Price Lists Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a22
+  cpee:activity: a22
+  cpee:activity_uuid: be880c6863223e53ecaa81d76d06c469
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:32.798087+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "resizeDimension", "sheetId": 780173537, "dimension":
+      "COLUMNS", "startIndex": 0, "endIndex": 1, "pixelSize": 150}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Resize Price Lists Columns
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/resizeDimension
+  id:id: a22
+  cpee:activity: a22
+  cpee:activity_uuid: be880c6863223e53ecaa81d76d06c469
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:32.799022+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Invoice Registration
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 2df1951fd3ea219ae87cd338a22eff50
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Invoice Registration'!A1:C"
+  time:timestamp: '2026-10-12T13:57:32.813795+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Invoice Registration
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 2df1951fd3ea219ae87cd338a22eff50
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:33.189538+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Invoice Registration''!A1:C100",
+      "values": [["Invoice Name", "Currency", "Price List"], ["Invoice-Test-01", "EUR",
+      "Price List A"]]}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Invoice Registration
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 2df1951fd3ea219ae87cd338a22eff50
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:33.208089+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Invoice Registration
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a19
+  cpee:activity: a19
+  cpee:activity_uuid: 2df1951fd3ea219ae87cd338a22eff50
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: verifiedRegistrationData
+    value:
+    - - Invoice Name
+      - Currency
+      - Price List
+    - - Invoice-Test-01
+      - EUR
+      - Price List A
+  time:timestamp: '2026-10-12T13:57:33.207684+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 706c968c68832e3217352fd578290357
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 1lwpiqaMlWc4WJeTGkV3w6jG_yP-VKCqyzrBgXgdfNM4
+  - name: range
+    value: "'Price Lists'!A1:A"
+  time:timestamp: '2026-10-12T13:57:33.218636+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 706c968c68832e3217352fd578290357
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T13:57:34.083657+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "readData", "range": "''Price Lists''!A1:A103",
+      "values": [["Price List"], ["Price List A"], ["Price List B"], ["Price List
+      C"]]}'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 706c968c68832e3217352fd578290357
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T13:57:34.099168+02:00'
+---
+event:
+  concept:instance: 112721
+  concept:name: Verify Price Lists
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/readData
+  id:id: a14
+  cpee:activity: a14
+  cpee:activity_uuid: 706c968c68832e3217352fd578290357
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: verifiedPriceListsData
+    value:
+    - - Price List
+    - - Price List A
+    - - Price List B
+    - - Price List C
+  time:timestamp: '2026-10-12T13:57:34.098991+02:00'
+---
+event:
+  concept:instance: 112721
+  id:id: ex-ante
+  cpee:instance: 4dc6a7fa-92c5-408a-bcb9-d74b1a962e85
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2026-10-12T13:57:34.100092+02:00'
