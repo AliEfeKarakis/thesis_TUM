@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<organisation xmlns="http://cpee.org/ns/organisation/1.0">
+  <units>
+    <unit id="Thesis">
+      <permissions/>
+    </unit>
+  </units>
+  <roles>
+    <role id="Regular">
+      <permissions/>
+    </role>
+  </roles>
+  <subjects>
+    <subject id="Test User" uid="03743056_testuser">
+      <relation unit="Thesis" role="Regular"/>
+    </subject>
+  </subjects>
+</organisation>
