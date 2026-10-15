@@ -1,0 +1,59 @@
+<worklist-form-load>
+  var vendorFields = [
+    ['request_id', 'Request ID'],
+    ['vendor_name', 'Vendor name'],
+    ['vendor_country', 'Vendor country'],
+    ['vendor_tax_id', 'Vendor tax ID'],
+    ['contact_person', 'Contact person'],
+    ['request_evidence', 'Request evidence']
+  ];
+  var vendorSummary = [];
+  var missingFields = [];
+
+  vendorFields.forEach(function(field) {
+    var value = data[field[0]] == null ? '' : String(data[field[0]]);
+    $('#' + field[0],form).val(value);
+    vendorSummary.push(field[1] + ': ' + value);
+    if (value.trim() === '') missingFields.push(field[1]);
+  });
+
+  $('#vendor_request',form).text(vendorSummary.join('\n'));
+  $('#missing_information',form).text(
+    missingFields.length ? missingFields.join(', ') : 'No missing fields.'
+  );
+</worklist-form-load>
+
+<h3>Correct Vendor Information</h3>
+
+<p>Current vendor request:</p>
+<pre id="vendor_request" style="white-space: pre-wrap; border: 1px solid #ccc; padding: 10px;"></pre>
+
+<p>Missing information:</p>
+<pre id="missing_information" style="white-space: pre-wrap; border: 1px solid #ccc; padding: 10px;"></pre>
+
+<p>
+  <label for="request_id">Request ID:</label><br>
+  <input type="text" id="request_id" name="request_id" size="70" required form="worklist-form">
+</p>
+<p>
+  <label for="vendor_name">Vendor name:</label><br>
+  <input type="text" id="vendor_name" name="vendor_name" size="70" required form="worklist-form">
+</p>
+<p>
+  <label for="vendor_country">Vendor country:</label><br>
+  <input type="text" id="vendor_country" name="vendor_country" size="70" required form="worklist-form">
+</p>
+<p>
+  <label for="vendor_tax_id">Vendor tax ID:</label><br>
+  <input type="text" id="vendor_tax_id" name="vendor_tax_id" size="70" required form="worklist-form">
+</p>
+<p>
+  <label for="contact_person">Contact person:</label><br>
+  <input type="text" id="contact_person" name="contact_person" size="70" required form="worklist-form">
+</p>
+<p>
+  <label for="request_evidence">Request evidence:</label><br>
+  <textarea id="request_evidence" name="request_evidence" rows="4" cols="70" required form="worklist-form"></textarea>
+</p>
+
+<input type="submit" value="Submit" form="worklist-form">

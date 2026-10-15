@@ -1,0 +1,41 @@
+<worklist-form-load>
+  function travelFieldValue(value) {
+    return value == null ? '' : String(value);
+  }
+
+  var travelRequest = [
+    'Request ID: ' + travelFieldValue(data.travel_request_id),
+    'Employee: ' + travelFieldValue(data.employee_name),
+    'Destination: ' + travelFieldValue(data.destination),
+    'Start date: ' + travelFieldValue(data.start_date),
+    'End date: ' + travelFieldValue(data.end_date),
+    'Purpose: ' + travelFieldValue(data.travel_purpose)
+  ].join('\n');
+
+  $('#travel_request',form).text(travelRequest);
+  $('#personal_car_requested',form).text(
+    data.personal_car_requested === true ? 'Yes' :
+    data.personal_car_requested === false ? 'No' :
+    travelFieldValue(data.personal_car_requested)
+  );
+</worklist-form-load>
+
+<h3>Personal Car Decision</h3>
+
+<p>Travel request:</p>
+<pre id="travel_request" style="white-space: pre-wrap; border: 1px solid #ccc; padding: 10px;"></pre>
+
+<p>Personal car requested: <strong id="personal_car_requested"></strong></p>
+
+<p>
+  <label>
+    <input type="radio" name="car_decision" value="Accept" checked form="worklist-form">
+    Accept
+  </label>
+  <label style="margin-left: 20px;">
+    <input type="radio" name="car_decision" value="Reject" form="worklist-form">
+    Reject
+  </label>
+</p>
+
+<input type="submit" value="Submit" form="worklist-form">

@@ -1,0 +1,20 @@
+<worklist-form-load>
+  $('#invoice_name',form).text(data.invoice_name || '');
+  $('#invoice_currency',form).text(data.invoice_currency || '');
+  $('#requested_price_list',form).text(data.requested_price_list || '');
+</worklist-form-load>
+
+<h3>Define New Price List</h3>
+
+<p>Invoice name: <strong id="invoice_name"></strong></p>
+<p>Invoice currency: <strong id="invoice_currency"></strong></p>
+<p>Requested price list: <strong id="requested_price_list"></strong></p>
+
+<p>No existing price list was found. Define the price list to be used.</p>
+
+<p>
+  <label for="new_price_list">New price list:</label><br>
+  <input id="new_price_list" name="new_price_list" type="text" form="worklist-form" required>
+</p>
+
+<input type="submit" value="Submit" form="worklist-form">
