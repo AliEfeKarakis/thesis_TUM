@@ -1,0 +1,1772 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 112839
+    cpee:name: Thesis_Workflow_Spreadsheet_Order_Filtering
+    cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2026-10-12T22:15:00.182129+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  time:timestamp: '2026-10-12T22:15:00.196893+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e4" mode="post_test" condition="data.authorized == false">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a10" endpoint="checkAuthorization">
+          <parameters>
+            <label>Check Authorization</label>
+            <color/>
+            <arguments/>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.authorized = result['authorized']; data.authorizationUrl = result['authorization_url']</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e1" mode="exclusive" label="Authorized?">
+          <alternative eid="e2" condition="data.authorized == true">
+            <call id="a9" endpoint="createSpreadsheet">
+              <parameters>
+                <label>Create Spreadsheet</label>
+                <color/>
+                <arguments>
+                  <api_key>BACKEND_API_KEY</api_key>
+                  <user_id>default</user_id>
+                  <spreadsheet_title>Spreadsheet Order Filtering</spreadsheet_title>
+                  <sheet_name>Raw Orders</sheet_name>
+                  <rows>20</rows>
+                  <columns>5</columns>
+                </arguments>
+              </parameters>
+              <code>
+                <signal>false</signal>
+                <prepare/>
+                <finalize output="result">data.spreadsheetId = result['spreadsheetId']
+    data.rawSheetId = result['sheetId']</finalize>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_generic/>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                  <_include>false</_include>
+                </_logging_behavior>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <otherwise eid="e3">
+            <manipulate id="a15" label="Authorization Required">
+              <code>data.authorizationUrl = data.authorizationUrl</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <stop id="a16"/>
+          </otherwise>
+        </choose>
+      </loop>
+      <call id="a8" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Headers</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Raw Orders'!A1:E1</range>
+            <values>[["Order ID","Customer","Product","Amount","Status"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a7" endpoint="appendData">
+        <parameters>
+          <label>Append Sample Orders</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Raw Orders'!A2:E</range>
+            <values>[["ORD-001","Alice","Laptop Stand",49.9,"Completed"],["ORD-002","Bob","Keyboard",79.0,"Pending"],["ORD-003","Clara","Mouse",29.5,"Completed"],["ORD-004","David","Monitor",249.0,"Cancelled"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a6" endpoint="readData">
+        <parameters>
+          <label>Read Raw Orders</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Raw Orders'!A1:E</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.rawOrderData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a11" label="Filter Completed Orders">
+        <code>rows = data.rawOrderData || []; if rows.empty?; data.completedOrderData = []; else; header = rows.first; completed_rows = rows.drop(1).select { |row| row[4].to_s == 'Completed' }; data.completedOrderData = [header] + completed_rows; end</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a4" endpoint="createSheet">
+        <parameters>
+          <label>Create Completed Orders Sheet</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheet_title>Completed Orders</sheet_title>
+            <rows>20</rows>
+            <columns>5</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.completedSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a3" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Completed Orders</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Completed Orders'!A1:E</range>
+            <values>!data.completedOrderData.to_json</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a2" endpoint="formatRange">
+        <parameters>
+          <label>Format Raw Orders Header</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.rawSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>5</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+            <backgroundColor>{"red":0.85,"green":0.85,"blue":0.85}</backgroundColor>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a1" endpoint="formatRange">
+        <parameters>
+          <label>Format Completed Orders Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.completedSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>5</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+            <backgroundColor>{"red":0.85,"green":0.85,"blue":0.85}</backgroundColor>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a5" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Raw Orders Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.rawSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>5</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a12" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Completed Orders Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.completedSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>5</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a13" endpoint="readData">
+        <parameters>
+          <label>Verify Completed Orders</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Completed Orders'!A1:E</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedCompletedOrderData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  cpee:change_uuid: 7e9becf452a218efbb713236efe564a6a45af026
+  time:timestamp: '2026-10-12T22:15:00.210663+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <loop eid="e4" mode="post_test" condition="data.authorized == false">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <_annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_iteration>false</_iteration>
+          </_logging_behavior>
+        </_annotations>
+        <call id="a10" endpoint="checkAuthorization">
+          <parameters>
+            <label>Check Authorization</label>
+            <color/>
+            <arguments/>
+          </parameters>
+          <code>
+            <signal>false</signal>
+            <prepare/>
+            <finalize output="result">data.authorized = result['authorized']; data.authorizationUrl = result['authorization_url']</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_logging_behavior>
+              <_exclude>false</_exclude>
+              <_include>false</_include>
+            </_logging_behavior>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <choose eid="e1" mode="exclusive" label="Authorized?">
+          <alternative eid="e2" condition="data.authorized == true">
+            <call id="a9" endpoint="createSpreadsheet">
+              <parameters>
+                <label>Create Spreadsheet</label>
+                <color/>
+                <arguments>
+                  <api_key>BACKEND_API_KEY</api_key>
+                  <user_id>default</user_id>
+                  <spreadsheet_title>Spreadsheet Order Filtering</spreadsheet_title>
+                  <sheet_name>Raw Orders</sheet_name>
+                  <rows>20</rows>
+                  <columns>5</columns>
+                </arguments>
+              </parameters>
+              <code>
+                <signal>false</signal>
+                <prepare/>
+                <finalize output="result">data.spreadsheetId = result['spreadsheetId']
+    data.rawSheetId = result['sheetId']</finalize>
+                <update output="result"/>
+                <rescue output="result"/>
+              </code>
+              <annotations>
+                <_generic/>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                  <_include>false</_include>
+                </_logging_behavior>
+                <_timing>
+                  <_timing_weight/>
+                  <_timing_avg/>
+                  <explanations/>
+                </_timing>
+                <_shifting>
+                  <_shifting_type>Duration</_shifting_type>
+                </_shifting>
+                <_context_data_analysis>
+                  <probes/>
+                  <ips/>
+                </_context_data_analysis>
+                <report>
+                  <url/>
+                </report>
+                <_notes>
+                  <_notes_general/>
+                </_notes>
+              </annotations>
+              <documentation>
+                <input/>
+                <output/>
+                <implementation>
+                  <description/>
+                </implementation>
+                <code>
+                  <description/>
+                </code>
+              </documentation>
+            </call>
+            <_probability>
+              <_probability_min/>
+              <_probability_max/>
+              <_probability_avg/>
+            </_probability>
+          </alternative>
+          <otherwise eid="e3">
+            <manipulate id="a15" label="Authorization Required">
+              <code>data.authorizationUrl = data.authorizationUrl</code>
+              <annotations>
+                <_logging_behavior>
+                  <_exclude>false</_exclude>
+                </_logging_behavior>
+                <_context_data_analysis>
+                  <probes/>
+                </_context_data_analysis>
+              </annotations>
+            </manipulate>
+            <stop id="a16"/>
+          </otherwise>
+        </choose>
+      </loop>
+      <call id="a8" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Headers</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Raw Orders'!A1:E1</range>
+            <values>nil</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a7" endpoint="appendData">
+        <parameters>
+          <label>Append Sample Orders</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Raw Orders'!A2:E</range>
+            <values>[["ORD-001","Alice","Laptop Stand",49.9,"Completed"],["ORD-002","Bob","Keyboard",79.0,"Pending"],["ORD-003","Clara","Mouse",29.5,"Completed"],["ORD-004","David","Monitor",249.0,"Cancelled"]]</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a6" endpoint="readData">
+        <parameters>
+          <label>Read Raw Orders</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Raw Orders'!A1:E</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.rawOrderData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a11" label="Filter Completed Orders">
+        <code>rows = data.rawOrderData || []; if rows.empty?; data.completedOrderData = []; else; header = rows.first; completed_rows = rows.drop(1).select { |row| row[4].to_s == 'Completed' }; data.completedOrderData = [header] + completed_rows; end</code>
+        <annotations>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+          </_logging_behavior>
+          <_context_data_analysis>
+            <probes/>
+          </_context_data_analysis>
+        </annotations>
+      </manipulate>
+      <call id="a4" endpoint="createSheet">
+        <parameters>
+          <label>Create Completed Orders Sheet</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheet_title>Completed Orders</sheet_title>
+            <rows>20</rows>
+            <columns>5</columns>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.completedSheetId = result['sheetId']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a3" endpoint="updateManyCells">
+        <parameters>
+          <label>Write Completed Orders</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Completed Orders'!A1:E</range>
+            <values>!data.completedOrderData.to_json</values>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a2" endpoint="formatRange">
+        <parameters>
+          <label>Format Raw Orders Header</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.rawSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>5</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+            <backgroundColor>{"red":0.85,"green":0.85,"blue":0.85}</backgroundColor>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a1" endpoint="formatRange">
+        <parameters>
+          <label>Format Completed Orders Header</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.completedSheetId</sheetId>
+            <startRowIndex>0</startRowIndex>
+            <endRowIndex>1</endRowIndex>
+            <startColumnIndex>0</startColumnIndex>
+            <endColumnIndex>5</endColumnIndex>
+            <bold>true</bold>
+            <fontSize>12</fontSize>
+            <backgroundColor>{"red":0.85,"green":0.85,"blue":0.85}</backgroundColor>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a5" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Raw Orders Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.rawSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>5</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a12" endpoint="resizeDimension">
+        <parameters>
+          <label>Resize Completed Orders Columns</label>
+          <color/>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <sheetId>!data.completedSheetId</sheetId>
+            <dimension>COLUMNS</dimension>
+            <startIndex>0</startIndex>
+            <endIndex>5</endIndex>
+            <pixelSize>150</pixelSize>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a13" endpoint="readData">
+        <parameters>
+          <label>Verify Completed Orders</label>
+          <color/>
+          <method>:post</method>
+          <arguments>
+            <api_key>BACKEND_API_KEY</api_key>
+            <user_id>default</user_id>
+            <spreadsheetId>!data.spreadsheetId</spreadsheetId>
+            <range>'Completed Orders'!A1:E</range>
+          </arguments>
+        </parameters>
+        <code>
+          <signal>false</signal>
+          <prepare/>
+          <finalize output="result">data.verifiedCompletedOrderData = result['values']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_logging_behavior>
+            <_exclude>false</_exclude>
+            <_include>false</_include>
+          </_logging_behavior>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  cpee:change_uuid: ce3f97c9bda713c5b21a0eb8e22ba8f003be1120
+  time:timestamp: '2026-10-12T22:15:21.310005+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2026-10-12T22:15:59.186130+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 92fb6eb53ddf2c2bcbab64249233b559
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2026-10-12T22:15:59.187587+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 92fb6eb53ddf2c2bcbab64249233b559
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T22:15:59.292879+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "user_id": "default", "authorized": true}'
+---
+event:
+  concept:instance: 112839
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 92fb6eb53ddf2c2bcbab64249233b559
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: authorized
+    value: true
+  - name: authorizationUrl
+    value:
+  time:timestamp: '2026-10-12T22:15:59.305542+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Check Authorization
+  concept:endpoint: https-get://lehre.bpm.in.tum.de/ports/9001/auth/status
+  id:id: a10
+  cpee:activity: a10
+  cpee:activity_uuid: 92fb6eb53ddf2c2bcbab64249233b559
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T22:15:59.305736+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Create Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 19405caeaaf85590867e091a4dc48c86
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheet_title
+    value: Spreadsheet Order Filtering
+  - name: sheet_name
+    value: Raw Orders
+  - name: rows
+    value: '20'
+  - name: columns
+    value: '5'
+  time:timestamp: '2026-10-12T22:15:59.316131+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: e2
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == true
+    result: true
+  time:timestamp: '2026-10-12T22:15:59.314549+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Create Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 19405caeaaf85590867e091a4dc48c86
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T22:16:00.530804+02:00'
+  data:
+  - name: result
+    mimetype: application/json
+    data: '{"ok": true, "operation": "createSpreadsheet", "spreadsheetId": "14DrT2H0mlpL84kMT6Dp45ROwnJCsyAPyLHUPNwdGTCQ",
+      "sheetId": 1261891977, "sheetTitle": "Raw Orders"}'
+---
+event:
+  concept:instance: 112839
+  id:id: e1
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/join
+  time:timestamp: '2026-10-12T22:16:00.546105+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Create Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 19405caeaaf85590867e091a4dc48c86
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2026-10-12T22:16:00.545659+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Create Spreadsheet
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/createSpreadsheet
+  id:id: a9
+  cpee:activity: a9
+  cpee:activity_uuid: 19405caeaaf85590867e091a4dc48c86
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: spreadsheetId
+    value: 14DrT2H0mlpL84kMT6Dp45ROwnJCsyAPyLHUPNwdGTCQ
+  - name: rawSheetId
+    value: 1261891977
+  time:timestamp: '2026-10-12T22:16:00.545453+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: e4
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  data:
+    condition: data.authorized == false
+    result: false
+  time:timestamp: '2026-10-12T22:16:00.553840+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Write Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: b05456e39ce44b9998cb94b06434d75e
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: api_key
+    value: BACKEND_API_KEY
+  - name: user_id
+    value: default
+  - name: spreadsheetId
+    value: 14DrT2H0mlpL84kMT6Dp45ROwnJCsyAPyLHUPNwdGTCQ
+  - name: range
+    value: "'Raw Orders'!A1:E1"
+  - name: values
+    value: nil
+  time:timestamp: '2026-10-12T22:16:00.562522+02:00'
+---
+event:
+  concept:instance: 112839
+  concept:name: Write Headers
+  concept:endpoint: https-post://lehre.bpm.in.tum.de/ports/9001/updateManyCells
+  id:id: a8
+  cpee:activity: a8
+  cpee:activity_uuid: b05456e39ce44b9998cb94b06434d75e
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2026-10-12T22:16:00.627535+02:00'
+  data:
+  - name: error
+    mimetype: application/json
+    data: '{"status":500,"error":"\n    <!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML
+      2.0//EN\">\n    <html>\n        <head>\n            <title>Error: 500 Internal
+      Server Error</title>\n            <style type=\"text/css\">\n              html
+      {background-color: #eee; font-family: sans-serif;}\n              body {background-color:
+      #fff; border: 1px solid #ddd;\n                    padding: 15px; margin: 15px;}\n              pre
+      {background-color: #eee; border: 1px solid #ddd; padding: 5px;}\n            </style>\n        </head>\n        <body>\n            <h1>Error:
+      500 Internal Server Error</h1>\n            <p>Sorry, the requested URL <tt>&#039;https://lehre.bpm.in.tum.de/updateManyCells&#039;</tt>\n               caused
+      an error:</p>\n            <pre>Internal Server Error</pre>\n              <h2>Exception:</h2>\n              <pre>JSONDecodeError(&#039;Expecting
+      value: line 1 column 1 (char 0)&#039;)</pre>\n              <h2>Traceback:</h2>\n              <pre>Traceback
+      (most recent call last):\n  File &quot;/home/students/ge65yed/.local/lib/python3.12/site-packages/bottle.py&quot;,
+      line 996, in _handle\n    out = route.call(**args)\n          ^^^^^^^^^^^^^^^^^^\n  File
+      &quot;/home/students/ge65yed/.local/lib/python3.12/site-packages/bottle.py&quot;,
+      line 2026, in wrapper\n    rv = callback(*a, **ka)\n         ^^^^^^^^^^^^^^^^^^\n  File
+      &quot;/srv/gruppe/students/ge65yed/Thesis/python_code/thesisBackend/routes/sheets_routes.py&quot;,
+      line 352, in update_many_cells\n    values = json.loads(values)\n             ^^^^^^^^^^^^^^^^^^\n  File
+      &quot;/usr/lib/python3.12/json/__init__.py&quot;, line 346, in loads\n    return
+      _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File &quot;/usr/lib/python3.12/json/decoder.py&quot;,
+      line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File
+      &quot;/usr/lib/python3.12/json/decoder.py&quot;, line 355, in raw_decode\n    raise
+      JSONDecodeError(&quot;Expecting value&quot;, s, err.value) from None\njson.decoder.JSONDecodeError:
+      Expecting value: line 1 column 1 (char 0)\n</pre>\n        </body>\n    </html>\n"}'
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: stopping
+  time:timestamp: '2026-10-12T22:16:00.633125+02:00'
+---
+event:
+  concept:instance: 112839
+  id:id: ex-ante
+  cpee:instance: 25da437a-d080-4231-8432-463c3e160ed8
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: stopped
+  time:timestamp: '2026-10-12T22:16:00.634940+02:00'
