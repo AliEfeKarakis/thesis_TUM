@@ -9,6 +9,6 @@ To prevent disclosure of credentials, actual backend API-key values in these pub
 The invalid API key value intentionally used in E2 has been preserved as part of the test evidence.
 Apart from these replacements of credentials, the content of the logs remains unchanged.
 
-The logs contain workflow execution details and the corresponding responses. The corresponding spreadsheet files for the included regular executions are available at: https://github.com/AliEfeKarakis/thesis_TUM/tree/f8dc93439631ec1f53705cd4f9de297e5f6b7f0f/spreadsheets
+The logs contain workflow execution details and the corresponding responses. The corresponding spreadsheet files for the included regular executions are available at: [spreadsheets directory](../spreadsheets/)
 
 Error-handling tests were conducted separately from regular runs. Their results should be interpreted in accordance with the case-specific requirements described in the “Evaluation” chapter.
