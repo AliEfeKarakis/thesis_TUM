@@ -768,7 +768,6 @@ data.rawSheetId = result['sheetId']</finalize>
           </code>
         </documentation>
       </call>
-      <stop id="a14"/>
     </description>
   </description>
   <transformation>

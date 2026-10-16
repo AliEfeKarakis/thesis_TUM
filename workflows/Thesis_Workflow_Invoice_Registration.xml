@@ -1149,7 +1149,6 @@ data.newPriceListData = [[data.selectedPriceList]]</finalize>
           </code>
         </documentation>
       </call>
-      <stop id="a20"/>
     </description>
   </description>
   <transformation>
