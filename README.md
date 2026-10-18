@@ -118,7 +118,7 @@ Keep the validation code immediately below this line unchanged. It prevents the 
 
 Use the same key in the workflows' `api_key` arguments when following Section 6. This key protects the backend spreadsheet endpoints. It is separate from your Google OAuth credentials and worklist account.
 
-Make this change only in your local execution copy. Do not upload your actual key to the published repository.
+Make this change in the execution copy that will run on your computer or server. If you edit it locally before deployment, upload the configured `config.py` to the backend directory on that server. Do not commit or push your actual key to the published repository.
 
 ### Set your backend URL
 
@@ -263,6 +263,8 @@ python3 app.py
 
 Use the same Python environment in which you installed the dependencies. Leave the terminal running the backend open while completing the following steps and executing workflows.
 
+In all URLs below, replace `https://backend.example` with the backend address configured in Section 2, including any deployment-specific URL prefix.
+
 In your web browser, open your backend URL followed by `/health`. For example:
 
 ```text
@@ -281,7 +283,7 @@ In the same browser, open the authorization endpoint:
 https://backend.example/authorize?user_id=default
 ```
 
-This endpoint returns JSON containing an `authorization_url`. Open that URL, sign in with the intended Google account and grant access.
+This endpoint returns JSON containing an `authorization_url`. It does not redirect you automatically. Copy the complete value of `authorization_url`, without the surrounding quotation marks, into your browser. Sign in with the intended Google account and grant access.
 
 After the callback completes, check:
 
@@ -289,7 +291,7 @@ After the callback completes, check:
 https://backend.example/auth/status?user_id=default
 ```
 
-The response should contain `authorized=true`.
+The response should contain `"authorized": true`.
 
 The backend creates the `tokens` directory when saving authorization. Keep `user_id` set to `default` in the supplied workflows unless you deliberately configure another authorization context consistently.
 
@@ -301,6 +303,8 @@ The [worklists directory](worklists/) contains `org.xml` and the three forms use
 
 In `worklists/org.xml`, adjust the subject identity to match the worklist account that will perform the human tasks. In particular, configure the subject's `uid` for that account.
 
+Use the subject's `uid` as your username in the CPEE worklist interface. This worklist identity is separate from the backend's `user_id` argument, whose supplied value `default` identifies the saved Google authorization context.
+
 Host `org.xml` and the HTML files at URLs accessible to the worklist service and the browser displaying the tasks.
 
 The forms are:
@@ -311,7 +315,7 @@ The forms are:
 
 Starting `app.py` does not make `org.xml` or the HTML forms available through web URLs. Place these files in a directory served by your web server, which may differ from the backend directory. The same server can host both the backend and these files.
 
-The public URLs depend on your web server's configuration; a filesystem path alone does not establish a working URL. Before configuring the workflow arguments in Section 6, open the public URL of `org.xml` and each form in a browser. Confirm that they return the expected XML or HTML content rather than a “Not Found” page or a login page. The URLs must also be accessible to the worklist service. A GitHub file-view page does not serve the form itself.
+The public URLs depend on your web server's configuration. A filesystem path alone does not establish a working URL. Before configuring the workflow arguments in Section 6, open the public URL of `org.xml` and each form in a browser. Confirm that they return the expected XML or HTML content rather than a “Not Found” page or a login page. The URLs must also be accessible to the worklist service. A GitHub file-view page does not serve the form itself.
 
 Publish only the organizational model and forms in this directory. Keep backend configuration containing API keys, `client_secret.json` and generated token files outside publicly served directories.
 
@@ -324,9 +328,13 @@ The workflow files are:
 - [Thesis_Workflow_Vendor_Onboarding_and_Ticket_Processing.xml](workflows/Thesis_Workflow_Vendor_Onboarding_and_Ticket_Processing.xml)
 - [Thesis_Workflow_Travel_Authorization_Request_Processing.xml](workflows/Thesis_Workflow_Travel_Authorization_Request_Processing.xml)
 
+These XML files are already included in the `workflows` directory of your cloned or extracted repository. No separate download is required.
+
 Open the [CPEE interface](https://cpee.org/flow/) and create a new instance. Use the `load testset` control to select the downloaded workflow XML file. This loads its data objects, endpoints and process model together.
 
 Before starting it, make the following changes. These can be made manually in CPEE or in a local copy of the XML before importing it.
+
+If you edit a local XML file after importing it, load the updated file into a fresh CPEE instance and check the scenario inputs in Section 7 before starting it. Uploading the XML to your backend server does not update the model already loaded in CPEE.
 
 ### Backend endpoints
 
