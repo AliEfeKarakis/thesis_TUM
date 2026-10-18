@@ -48,31 +48,49 @@ Download the repository through GitHub's Code > Download ZIP option and extract 
 
 Open the extracted repository directory in your IDE or terminal. This is the directory containing `app.py`.
 
-Create a Python virtual environment, either through your IDE or with:
+Create a Python virtual environment in the repository directory:
 
 ```text
 python -m venv .venv
 ```
 
-Select the virtual environment as your project's Python interpreter. Before running the installation command, activate that environment in your terminal or use an IDE terminal configured to use it. Selecting an IDE interpreter does not necessarily update an already-open terminal.
-
-Install the dependencies using that environment:
-
-```text
-python -m pip install -r requirements.txt
-```
-
-The commands assume that `python` refers to the selected interpreter. If your installation uses `python3`, use:
+If your Python installation uses `python3`, use this command instead:
 
 ```text
 python3 -m venv .venv
 ```
 
-After activating or selecting that environment, install the dependencies with:
+Activate the environment using the command for your operating system and terminal. Run only the applicable activation command from the repository directory.
+
+Windows — Command Prompt:
+
+```bat
+.venv\Scripts\activate.bat
+```
+
+Windows — PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+macOS or Linux — bash or zsh:
+
+```sh
+source .venv/bin/activate
+```
+
+After activation, install the dependencies in the same terminal:
 
 ```text
-python3 -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
+
+After activation, the `python` command uses the virtual environment's interpreter, including when the environment was created using `python3`.
+
+If you use an IDE, select `.venv` as the project's Python interpreter. Selecting an IDE interpreter does not necessarily activate an already-open terminal.
+
+Keep this environment active when starting the backend later. If you open a new terminal, return to the repository directory and activate the environment again.
 
 ## 2. Configure the backend
 
