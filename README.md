@@ -48,6 +48,8 @@ Download the repository through GitHub's Code > Download ZIP option and extract 
 
 Open the extracted repository directory in your IDE or terminal. This is the directory containing `app.py`.
 
+Create the virtual environment on the computer or server where the backend will run, in the project's final directory. If you move or transfer the project, recreate the environment at the destination and reinstall the dependencies.
+
 Create a Python virtual environment in the repository directory:
 
 ```text
@@ -189,23 +191,59 @@ Keep actual API keys, `client_secret.json` and generated token files out of the 
 
 ## 3. Configure Google authorization
 
-Open the [Google Cloud Console](https://console.cloud.google.com/) and sign in with your Google account. Then:
+The backend uses OAuth authorization to access Google Sheets on behalf of a Google user. These Google credentials are separate from the backend API key configured in Section 2.
 
-1. Create or select a project.
-2. Enable the Google Sheets API.
-3. Configure the Google Auth platform and consent settings.
-4. If the application uses an external testing audience, add the Google account you will use as a test user.
-5. Configure the Google Sheets scope used by the backend:
+Open the [Google Cloud Console](https://console.cloud.google.com/) and complete the following steps.
 
-```text
-https://www.googleapis.com/auth/spreadsheets
-```
+1. **Create or select a project.**
 
-6. Create an OAuth client with application type Web application.
-7. Add the callback URL determined in Section 2 as an authorized redirect URI. It must exactly match the backend's `OAUTH_REDIRECT_URI` value.
-8. Download the OAuth client JSON file, rename it `client_secret.json` and place it beside `app.py`.
+   Use the project selector at the top of the console. Keep this project selected throughout the following steps.
 
-The backend uses OAuth authorization for a Google user. It does not use a service-account configuration.
+2. **Enable the Google Sheets API.**
+
+   Open APIs & Services > Library, search for Google Sheets API and click Enable. If the API is already enabled, no change is needed.
+
+3. **Configure the consent screen.**
+
+   Open Google Auth Platform > Branding. If configuration has not started, click Get Started and complete the application name, support email, audience and contact information.
+
+   For testing with a personal Google account, select External as the audience. Complete and save the setup. Existing settings can be reviewed under Branding, Audience and Data Access.
+
+4. **Add your Google account as a test user, where applicable.**
+
+   If the audience is External and the publishing status is Testing, open Audience. Under Test users, click Add users, enter the email address of the Google account you will use to authorize spreadsheet access and save it.
+
+   Use that same Google account during authorization in Section 4.
+
+5. **Configure the spreadsheet scope.**
+
+   Open Data Access > Add or remove scopes and select `https://www.googleapis.com/auth/spreadsheets`. If it is not listed, use the manual scope-entry option. Apply and save the selection.
+
+   This is the scope requested by the backend's `SCOPES` setting in `config.py`.
+
+6. **Create an OAuth client.**
+
+   Open Google Auth Platform > Clients > Create client. Select Web application as the application type and enter a descriptive name.
+
+   If you already have a Web application OAuth client for this setup, open it instead.
+
+7. **Register the callback URL.**
+
+   Under Authorized redirect URIs, add the callback URL determined in Section 2. Enter it here, not under Authorized JavaScript origins.
+
+   For example, if your backend address is `https://backend.example`, the callback is `https://backend.example/oauth2callback`.
+
+   Replace the example address with your actual backend address, including any deployment-specific URL prefix. The complete callback must exactly match the backend's `OAUTH_REDIRECT_URI` value. Create the client or save your changes.
+
+8. **Download and place the credentials file.**
+
+   Download the OAuth client's JSON file and rename it `client_secret.json`.
+
+   Place it beside `app.py` on the computer or server where the backend will run. If you prepare the files on your computer but run the backend on a server, transfer `client_secret.json` to that server's backend directory.
+
+   Do not use a service-account JSON file. Keep `client_secret.json` out of the published repository and publicly served web directories.
+
+This completes the Google Cloud configuration. In Section 4, you will start the backend and authorize access through your browser. You do not need to create the `tokens` directory manually.
 
 See Google's documentation for [OAuth consent configuration](https://developers.google.com/workspace/guides/configure-oauth-consent) and [OAuth client credentials](https://developers.google.com/workspace/guides/create-credentials).
 
@@ -271,9 +309,11 @@ The forms are:
 - `correct_vendor_information.html`: provide missing vendor information.
 - `personal_car_decision.html`: accept or reject personal-car use.
 
-Starting `app.py` does not make `org.xml` or the HTML forms available through web URLs. Serve these files through a web server so that the worklist service and the browser can retrieve them. This can use the same server as the backend; a separate server is not required.
+Starting `app.py` does not make `org.xml` or the HTML forms available through web URLs. Place these files in a directory served by your web server, which may differ from the backend directory. The same server can host both the backend and these files.
 
-The URLs must serve the XML or HTML content. A GitHub file-view page does not serve the form itself.
+The public URLs depend on your web server's configuration; a filesystem path alone does not establish a working URL. Before configuring the workflow arguments in Section 6, open the public URL of `org.xml` and each form in a browser. Confirm that they return the expected XML or HTML content rather than a “Not Found” page or a login page. The URLs must also be accessible to the worklist service. A GitHub file-view page does not serve the form itself.
+
+Publish only the organizational model and forms in this directory. Keep backend configuration containing API keys, `client_secret.json` and generated token files outside publicly served directories.
 
 ## 6. Import and configure the workflows
 
