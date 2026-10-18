@@ -44,7 +44,7 @@ Using the CPEE website means that requests to the backend are sent by the CPEE e
 
 ## 1. Download and install the backend
 
-Download the repository through GitHub's Code > Download ZIP option and extract it, or clone it with Git.
+Download the repository through GitHub's Code > Download ZIP option and extract it or clone it with Git.
 
 Open the extracted repository directory in your IDE or terminal. This is the directory containing `app.py`.
 
@@ -92,57 +92,104 @@ If you use an IDE, select `.venv` as the project's Python interpreter. Selecting
 
 Keep this environment active when starting the backend later. If you open a new terminal, return to the repository directory and activate the environment again.
 
-## 2. Configure the backend
+## 2. Set the backend API key, URL, host and port
 
-Set the following environment variables for the process that runs `app.py`. You can use your IDE's run configuration or your operating system's environment-variable settings.
+Open `config.py` in your downloaded copy of the repository. The following instructions explain how to configure this local copy without setting environment variables.
 
-- `CPEE_API_KEY`: your chosen nonempty backend API key.
-- `BASE_URL`: the externally accessible base URL of your backend, without a trailing slash.
-- `OAUTH_REDIRECT_URI`: the complete callback URL ending in `/oauth2callback`.
+### Set your backend API key
 
-`CPEE_API_KEY` is required for the backend to start. `BASE_URL` defaults to `http://localhost:9001`, and `OAUTH_REDIRECT_URI` defaults to `BASE_URL` followed by `/oauth2callback`. For another deployment, configure these values explicitly so that the callback points to the intended backend.
+Find:
+
+```python
+API_KEY = os.environ["CPEE_API_KEY"]
+```
+
+Replace that line with:
+
+```python
+API_KEY = os.environ.get("CPEE_API_KEY", "YOUR_CHOSEN_BACKEND_API_KEY")
+```
+
+Replace `YOUR_CHOSEN_BACKEND_API_KEY` with your own nonempty backend API key. Keep the first `"CPEE_API_KEY"` unchanged.
+
+Keep the validation code immediately below this line unchanged. It prevents the backend from starting with an empty or whitespace-only key.
+
+Use the same key in the workflows' `api_key` arguments when following Section 6. This key protects the backend spreadsheet endpoints. It is separate from your Google OAuth credentials and worklist account.
+
+Make this change only in your local execution copy. Do not upload your actual key to the published repository.
+
+### Set your backend URL
+
+You need a backend address that the CPEE engine can reach. Your hosting setup must route requests from that address to the Python application. Entering an address in `config.py` does not establish this connection.
+
+Find the `BASE_URL` block and replace `http://localhost:9001` with your backend address.
 
 For example:
 
-```text
-BASE_URL=https://backend.example
-OAUTH_REDIRECT_URI=https://backend.example/oauth2callback
+```python
+BASE_URL = os.environ.get(
+    "BASE_URL",
+    "https://backend.example"
+)
 ```
 
-`backend.example` is a placeholder. Replace it throughout these instructions with your actual backend address. The address must already be routed to the running backend; setting these variables does not establish that routing.
+`https://backend.example` is a placeholder. Replace it with your actual backend address, without a trailing slash. Include any URL prefix required by your deployment.
 
-If your deployment uses a URL prefix, include it in both values.
+Keep the first `"BASE_URL"` unchanged.
 
-`CPEE_API_KEY` protects the spreadsheet endpoints. It is separate from the Google OAuth client credentials and the worklist account.
+Leave the following block unchanged:
 
-The application reads environment variables directly. Creating a `.env` file alone does not configure it.
+```python
+OAUTH_REDIRECT_URI = os.environ.get(
+    "OAUTH_REDIRECT_URI",
+    f"{BASE_URL}/oauth2callback"
+)
+```
 
-In `config.py`, check:
+This derives the default Google authorization callback URL from `BASE_URL`. For the example above, the callback URL is:
+
+```text
+https://backend.example/oauth2callback
+```
+
+You will register this callback URL in Google Cloud in Section 3.
+
+### Check HOST and PORT
+
+In the same file, find:
 
 ```python
 HOST = "::1"
 PORT = 9001
 ```
 
-`9001` is the supplied port, not a required value. To use another available port, change `PORT` in `config.py` and configure your hosting to forward requests to that port. The current implementation does not read `PORT` from an environment variable.
+These settings control the address and port on which the Python application listens.
 
-Changing `PORT` does not automatically update `BASE_URL` or `OAUTH_REDIRECT_URI`. If the externally accessible backend address changes, update these environment variables, the workflow endpoint URLs and the authorized redirect URI in Google Cloud accordingly. If only the internal listening port changes and the external address remains unchanged, those external URLs can remain unchanged.
+Keep `PORT = 9001` if your hosting forwards requests to port `9001`. Otherwise, replace `9001` with the port required by your hosting setup.
 
-`HOST` controls the address on which the Python server listens. The supplied value is IPv6 loopback. If your hosting setup forwards requests to IPv4 loopback, change it to:
+`HOST = "::1"` uses IPv6 loopback. If your hosting forwards requests to IPv4 loopback, change it to:
 
 ```python
 HOST = "127.0.0.1"
 ```
 
-Use the listening address and port required by your hosting setup. `BASE_URL` describes the externally accessible address, while `HOST` and `PORT` configure where the Python application listens.
+Use the listening address required by your hosting setup. The implementation reads `HOST` and `PORT` directly from `config.py`.
 
-Configure your hosting so that requests to the backend URL reach this Python application. The university-server URLs contained in the workflow files must be replaced as described below.
+Changing the listening port does not automatically change the external backend address. If the external address changes, update `BASE_URL`, the callback URL registered in Google Cloud and the workflow endpoints described in Section 6.
+
+### Save the configuration
+
+Save `config.py` after making your changes. You will start the backend in Section 4.
+
+Environment variables named `CPEE_API_KEY`, `BASE_URL` or `OAUTH_REDIRECT_URI` take precedence over the corresponding defaults in your edited file. If you previously set these variables, remove the overrides to use the file-based settings described here or update them to the intended values. An empty `CPEE_API_KEY` environment variable also overrides the file value and prevents startup.
+
+No `.env` file is required for this setup.
 
 Keep actual API keys, `client_secret.json` and generated token files out of the published repository.
 
 ## 3. Configure Google authorization
 
-In Google Cloud:
+Open the [Google Cloud Console](https://console.cloud.google.com/) and sign in with your Google account. Then:
 
 1. Create or select a project.
 2. Enable the Google Sheets API.
@@ -155,7 +202,7 @@ https://www.googleapis.com/auth/spreadsheets
 ```
 
 6. Create an OAuth client with application type Web application.
-7. Add the exact `OAUTH_REDIRECT_URI` value as an authorized redirect URI.
+7. Add the callback URL determined in Section 2 as an authorized redirect URI. It must exactly match the backend's `OAUTH_REDIRECT_URI` value.
 8. Download the OAuth client JSON file, rename it `client_secret.json` and place it beside `app.py`.
 
 The backend uses OAuth authorization for a Google user. It does not use a service-account configuration.
@@ -176,9 +223,9 @@ If your configured Python environment uses the `python3` command instead, run:
 python3 app.py
 ```
 
-Use the same Python environment in which you installed the dependencies. Keep the backend running while executing workflows.
+Use the same Python environment in which you installed the dependencies. Leave the terminal running the backend open while completing the following steps and executing workflows.
 
-Open your backend URL followed by `/health`. For example:
+In your web browser, open your backend URL followed by `/health`. For example:
 
 ```text
 https://backend.example/health
@@ -190,7 +237,7 @@ The expected response contains:
 {"ok": true}
 ```
 
-Then open:
+In the same browser, open the authorization endpoint:
 
 ```text
 https://backend.example/authorize?user_id=default
@@ -237,7 +284,7 @@ The workflow files are:
 - [Thesis_Workflow_Vendor_Onboarding_and_Ticket_Processing.xml](workflows/Thesis_Workflow_Vendor_Onboarding_and_Ticket_Processing.xml)
 - [Thesis_Workflow_Travel_Authorization_Request_Processing.xml](workflows/Thesis_Workflow_Travel_Authorization_Request_Processing.xml)
 
-Open the [CPEE interface](https://cpee.org/flow/) and create a new instance. Import the selected XML file using the testset-loading option so that its data objects, endpoints and process model are loaded together.
+Open the [CPEE interface](https://cpee.org/flow/) and create a new instance. Use the `load testset` control to select the downloaded workflow XML file. This loads its data objects, endpoints and process model together.
 
 Before starting it, make the following changes. These can be made manually in CPEE or in a local copy of the XML before importing it.
 
@@ -275,7 +322,7 @@ https-post://cpee.org/worklist/server/
 
 ### Backend API key
 
-Replace every `BACKEND_API_KEY` placeholder in the `api_key` arguments with the value configured as `CPEE_API_KEY` in your backend environment.
+Replace every `BACKEND_API_KEY` placeholder in the `api_key` arguments with the backend API key configured in Section 2.
 
 Keep the argument name `api_key` unchanged.
 
@@ -362,9 +409,9 @@ For I3:
 - `invoiceName`: `Invoice-Test-03`
 - `requestedPriceList`: `Validation Test List`
 - In the first Define New Price List task, enter exactly three ordinary spaces and submit.
-- In the repeated task, enter two spaces, followed by `Corrected Price List`, followed by two spaces, and submit.
+- In the repeated task, enter two spaces, followed by `Corrected Price List`, followed by two spaces and submit.
 
-For I3, the first response causes another user-task invocation. The second response is trimmed, and `Corrected Price List` is stored and added once to the price lists.
+For I3, the first response causes another user-task invocation. The second response is trimmed and `Corrected Price List` is stored and added once to the price lists.
 
 ### Vendor Onboarding and Ticket Processing: V1–V3
 
@@ -426,14 +473,14 @@ For T3:
 - `personalCarRequested`: `true`
 - Select `Reject` in Personal Car Decision and submit.
 
-Both acceptance and rejection of personal-car use are recorded, and processing continues to `Submitted`. Rejection of personal-car use does not reject the entire travel request.
+Both acceptance and rejection of personal-car use are recorded and processing continues to `Submitted`. Rejection of personal-car use does not reject the entire travel request.
 
 ## 8. Execute and inspect the results
 
 After configuring the deployment settings and scenario inputs:
 
 1. Start the workflow in CPEE.
-2. For scenarios requiring human participation, open the worklist interface using the account configured in `org.xml`.
+2. For scenarios requiring human participation, open the [CPEE worklist interface](https://cpee.org/worklist/) and sign in using the account whose identity you configured in `org.xml`.
 3. Complete the tasks using the responses specified for the selected scenario.
 4. Inspect the final workflow state, execution log and generated spreadsheet.
 
